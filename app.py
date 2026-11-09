@@ -1,90 +1,121 @@
 
-import streamlit as st
-import torch
-import html
-import re
-
-from PIL import Image, ImageOps
-from transformers import AutoImageProcessor, AutoModelForImageClassification
-
-
 # ==================================================
-# PLANTSCAN - KONFIGURATION
-# ==================================================
-
-MODEL_ID = "domai-tb/OpenPlants-Identification-ViT-Base-Patch16-224"
-
-st.set_page_config(
-    page_title="PlantScan | KI-Pflanzenhelfer",
-    page_icon="🌿",
-    layout="wide"
-)
-
-
-# ==================================================
-# DESIGN
+# NEUES PLANTSCAN DESIGN & BENUTZEROBERFLÄCHE
 # ==================================================
 
 st.markdown("""
 <style>
     .stApp {
-        background-color: #f5f7f2;
+        background: linear-gradient(135deg, #f1f8ed, #e5f2df);
     }
 
-    h1, h2, h3 {
-        color: #183b2b;
+    header[data-testid="stHeader"] {
+        background: transparent;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+        max-width: 1150px;
     }
 
     .main-title {
-        font-size: 43px;
-        font-weight: 800;
-        color: #183b2b;
-        margin-bottom: 0;
+        font-size: clamp(48px, 7vw, 76px);
+        font-weight: 900;
+        letter-spacing: -3px;
+        color: #164b2e;
+        line-height: 1.05;
+        margin-bottom: 5px;
     }
 
     .subtitle {
-        color: #68796d;
-        font-size: 17px;
-        margin-top: 5px;
+        font-size: 19px;
+        color: #55745d;
+        margin-bottom: 30px;
     }
 
-    .info-card {
-        background-color: white;
-        padding: 23px;
-        border-radius: 15px;
-        border: 1px solid #e2e9df;
-        margin-bottom: 15px;
-    }
-
-    .result-name {
-        font-size: 25px;
-        font-weight: 700;
-        color: #183b2b;
-    }
-
-    .small-text {
-        color: #68796d;
-        font-size: 14px;
-    }
-
-    .stButton > button {
-        background-color: #285c40;
+    .hero {
+        background: linear-gradient(120deg, #164b2e, #39834d);
+        padding: 35px;
+        border-radius: 24px;
         color: white;
-        border-radius: 9px;
+        margin: 20px 0 30px 0;
+        box-shadow: 0 12px 30px rgba(22,75,46,0.15);
+    }
+
+    .hero h2 {
+        color: white;
+        font-size: 28px;
+    }
+
+    .hero p {
+        color: #e5f4e7;
+        font-size: 16px;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 28px;
+        border-radius: 20px;
+        border: 1px solid #dcebd8;
+        min-height: 190px;
+        box-shadow: 0 5px 15px rgba(30,80,40,0.06);
+        transition: all 0.25s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(30,80,40,0.16);
+        border-color: #68a875;
+    }
+
+    .feature-card h3 {
+        color: #205b36;
+        font-size: 23px;
+    }
+
+    .feature-card p {
+        color: #617566;
+        font-size: 15px;
+    }
+
+    .section-card {
+        background: white;
+        padding: 25px;
+        border-radius: 18px;
+        border: 1px solid #dcebd8;
+        margin: 15px 0;
+    }
+
+    div[data-testid="stFileUploader"] {
+        background: white;
+        padding: 20px;
+        border-radius: 18px;
+        border: 1px solid #dcebd8;
+    }
+
+    div.stButton > button {
+        background: #287344;
+        color: white;
         border: none;
-        padding: 10px 22px;
+        border-radius: 12px;
+        padding: 13px;
+        font-weight: 700;
+        transition: all 0.2s ease;
     }
 
-    .stButton > button:hover {
-        background-color: #397650;
+    div.stButton > button:hover {
+        background: #164b2e;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(22,75,46,0.2);
         color: white;
     }
 
-    div[data-testid="stMetric"] {
-        background-color: white;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid #e2e9df;
+    [data-testid="stDialog"] {
+        border-radius: 24px;
+    }
+
+    h1, h2, h3 {
+        color: #164b2e;
     }
 
     footer {
@@ -95,248 +126,57 @@ st.markdown("""
 
 
 # ==================================================
-# MODELL LADEN
+# AUSWAHL-POPUP
 # ==================================================
 
-@st.cache_resource(show_spinner=False)
-def load_model():
+def reset_selection():
+    st.session_state["view"] = None
+    st.session_state["plant_results"] = None
 
-    processor = AutoImageProcessor.from_pretrained(MODEL_ID)
 
-    model = AutoModelForImageClassification.from_pretrained(
-        MODEL_ID
+@st.dialog("🌿 Was möchtest du über deine Pflanze erfahren?", width="large")
+def choose_mode():
+
+    st.write(
+        "Dein Pflanzenfoto wurde hochgeladen! "
+        "Wähle aus, welchen Bereich du öffnen möchtest."
     )
 
-    model.eval()
+    col1, col2 = st.columns(2)
 
-    return processor, model
+    with col1:
 
+        st.markdown("""
+        <div class="feature-card">
+            <h3>🌱 Pflege</h3>
+            <p>
+                Erfahre mehr über deine Pflanze,
+                ihren Standort, Wasserbedarf
+                und ihre Pflege.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-# ==================================================
-# HILFSFUNKTIONEN
-# ==================================================
+        if st.button("Pflege öffnen", use_container_width=True):
+            st.session_state["view"] = "care"
+            st.rerun()
 
-def normalize_name(name):
+    with col2:
 
-    name = name.lower().strip()
-    name = name.replace("_", " ")
-    name = re.sub(r"\s+", " ", name)
+        st.markdown("""
+        <div class="feature-card">
+            <h3>🔍 Erkennung</h3>
+            <p>
+                Sieh dir die KI-Erkennung,
+                die wahrscheinlichste Pflanzenart
+                und mögliche Risiken an.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
-    return name
-
-
-def classify_image(image, processor, model):
-
-    inputs = processor(
-        images=image,
-        return_tensors="pt"
-    )
-
-    with torch.inference_mode():
-
-        outputs = model(**inputs)
-
-        probabilities = torch.softmax(
-            outputs.logits,
-            dim=-1
-        )[0]
-
-    top_results = torch.topk(
-        probabilities,
-        k=min(5, len(probabilities))
-    )
-
-    results = []
-
-    for score, index in zip(
-        top_results.values,
-        top_results.indices
-    ):
-
-        label = model.config.id2label[index.item()]
-
-        results.append({
-            "name": label,
-            "score": score.item()
-        })
-
-    return results
-
-
-# ==================================================
-# PFLANZENINFORMATIONEN
-# ==================================================
-
-PLANT_INFO = {
-
-    "monstera deliciosa": {
-        "name": "Monstera",
-        "description": "Eine beliebte tropische Zimmerpflanze mit großen, eingeschnittenen Blättern.",
-        "care": "Helles, indirektes Licht. Mäßig gießen und Staunässe vermeiden."
-    },
-
-    "sansevieria trifasciata": {
-        "name": "Bogenhanf",
-        "description": "Eine robuste Zimmerpflanze mit langen, aufrecht wachsenden Blättern.",
-        "care": "Heller bis halbschattiger Standort. Nur sparsam gießen."
-    },
-
-    "chlorophytum comosum": {
-        "name": "Grünlilie",
-        "description": "Eine verbreitete Zimmerpflanze mit langen, schmalen Blättern.",
-        "care": "Heller Standort ohne starke direkte Mittagssonne. Regelmäßig, aber mäßig gießen."
-    },
-
-    "aloe vera": {
-        "name": "Aloe vera",
-        "description": "Eine sukkulente Pflanze mit dicken, fleischigen Blättern.",
-        "care": "Viel Licht und sparsam gießen. Erde zwischen den Wassergaben trocknen lassen."
-    },
-
-    "zamioculcas zamiifolia": {
-        "name": "Glücksfeder",
-        "description": "Eine robuste Zimmerpflanze mit glänzenden, kräftigen Blättern.",
-        "care": "Heller bis halbschattiger Standort. Wenig Wasser und keine Staunässe."
-    },
-
-    "epipremnum aureum": {
-        "name": "Efeutute",
-        "description": "Eine Kletterpflanze mit herzförmigen Blättern.",
-        "care": "Heller Standort ohne starke direkte Sonne. Mäßig gießen."
-    },
-
-    "ficus elastica": {
-        "name": "Gummibaum",
-        "description": "Eine Zimmerpflanze mit großen, dicken und glänzenden Blättern.",
-        "care": "Heller Standort und mäßige Wassergaben."
-    },
-
-    "ficus lyrata": {
-        "name": "Geigenfeige",
-        "description": "Eine Zimmerpflanze mit großen, geigenförmigen Blättern.",
-        "care": "Heller Standort ohne starke direkte Mittagssonne."
-    },
-
-    "spathiphyllum wallisii": {
-        "name": "Einblatt",
-        "description": "Eine Zimmerpflanze mit dunkelgrünen Blättern und weißen Blüten.",
-        "care": "Heller bis halbschattiger Standort. Erde leicht feucht halten."
-    },
-
-    "dracaena marginata": {
-        "name": "Drachenbaum",
-        "description": "Eine Zimmerpflanze mit schmalen, langen Blättern.",
-        "care": "Heller Standort und mäßig gießen."
-    },
-
-    "crassula ovata": {
-        "name": "Geldbaum",
-        "description": "Eine Sukkulente mit dicken, ovalen Blättern.",
-        "care": "Viel Licht und sparsam gießen."
-    },
-
-    "yucca elephantipes": {
-        "name": "Yucca-Palme",
-        "description": "Eine Zimmerpflanze mit holzigem Stamm und langen, spitzen Blättern.",
-        "care": "Heller Standort und mäßige Wassergaben."
-    }
-}
-
-
-# ==================================================
-# GIFTIGKEITSINFORMATIONEN
-# ==================================================
-
-# Diese Liste enthält nur ausgewählte, bekannte Beispiele.
-# Nicht aufgeführte Pflanzen sind NICHT automatisch ungiftig.
-
-TOXICITY_INFO = {
-
-    "monstera deliciosa": {
-        "status": "giftig",
-        "title": "Für Haustiere problematisch",
-        "details": "Die Monstera enthält reizende Calciumoxalat-Kristalle. Sie kann insbesondere für Katzen und Hunde problematisch sein.",
-        "audience": "Katzen und Hunde"
-    },
-
-    "sansevieria trifasciata": {
-        "status": "giftig",
-        "title": "Für Haustiere problematisch",
-        "details": "Der Bogenhanf enthält Saponine und kann bei Aufnahme Beschwerden verursachen.",
-        "audience": "Katzen und Hunde"
-    },
-
-    "aloe vera": {
-        "status": "giftig",
-        "title": "Für Haustiere problematisch",
-        "details": "Bestandteile der Aloe vera können bei Haustieren Beschwerden verursachen.",
-        "audience": "Katzen und Hunde"
-    },
-
-    "zamioculcas zamiifolia": {
-        "status": "giftig",
-        "title": "Reizende Pflanzenbestandteile",
-        "details": "Die Glücksfeder enthält Calciumoxalat-Kristalle, die Schleimhäute reizen können.",
-        "audience": "Menschen und Haustiere"
-    },
-
-    "epipremnum aureum": {
-        "status": "giftig",
-        "title": "Für Haustiere problematisch",
-        "details": "Die Efeutute enthält Calciumoxalat-Kristalle und kann bei Aufnahme Reizungen verursachen.",
-        "audience": "Menschen und Haustiere"
-    },
-
-    "ficus elastica": {
-        "status": "giftig",
-        "title": "Vorsicht bei Haustieren",
-        "details": "Der Gummibaum enthält einen reizenden Milchsaft.",
-        "audience": "Menschen und Haustiere"
-    },
-
-    "spathiphyllum wallisii": {
-        "status": "giftig",
-        "title": "Reizende Pflanzenbestandteile",
-        "details": "Das Einblatt enthält Calciumoxalat-Kristalle, die bei Kontakt oder Aufnahme reizen können.",
-        "audience": "Menschen und Haustiere"
-    },
-
-    "chlorophytum comosum": {
-        "status": "ungiftig",
-        "title": "Als ungiftig für Haustiere gelistet",
-        "details": "Die Grünlilie wird in der ASPCA-Datenbank als ungiftig für Katzen und Hunde geführt.",
-        "audience": "Katzen und Hunde"
-    }
-}
-
-
-def get_plant_information(label):
-
-    normalized = normalize_name(label)
-
-    if normalized in PLANT_INFO:
-        return PLANT_INFO[normalized]
-
-    return {
-        "name": label,
-        "description": "Das Modell hat diese Pflanzenart erkannt. Es liegen in unserer kleinen Informationsdatenbank keine genau zugeordneten Informationen vor.",
-        "care": "Bitte informiere dich anhand des wissenschaftlichen Pflanzennamens über die individuellen Pflegeansprüche."
-    }
-
-
-def get_toxicity_information(label):
-
-    normalized = normalize_name(label)
-
-    if normalized in TOXICITY_INFO:
-        return TOXICITY_INFO[normalized]
-
-    return {
-        "status": "unbekannt",
-        "title": "Giftigkeit nicht überprüft",
-        "details": "Diese Pflanze ist nicht in unserer kleinen Giftigkeitsdatenbank enthalten. Daraus lässt sich nicht schließen, dass sie ungiftig ist.",
-        "audience": "Nicht sicher bestimmt"
-    }
+        if st.button("Erkennung öffnen", use_container_width=True):
+            st.session_state["view"] = "recognition"
+            st.rerun()
 
 
 # ==================================================
@@ -344,188 +184,166 @@ def get_toxicity_information(label):
 # ==================================================
 
 st.markdown(
-    '<p class="main-title">🌿 PlantScan</p>',
+    '<div class="main-title">🌿 PlantScan</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<p class="subtitle">Dein KI-Pflanzenhelfer – Pflanzen erkennen, Pflege erfahren und Risiken entdecken.</p>',
+    '<div class="subtitle">'
+    'Dein intelligenter Begleiter für gesunde Pflanzen.'
+    '</div>',
     unsafe_allow_html=True
 )
 
-st.write("")
-
 st.markdown("""
-<div class="info-card">
-    <h3>🌱 Willkommen bei PlantScan</h3>
-    Lade ein Foto einer Pflanze hoch. Unsere künstliche Intelligenz
-    versucht, die Pflanzenart zu bestimmen. Anschließend erhältst du
-    Informationen über die Pflanze, ihre Pflege und mögliche Risiken.
+<div class="hero">
+    <h2>Entdecke die Welt deiner Pflanzen.</h2>
+    <p>
+        Lade ein Foto hoch und entdecke mit künstlicher Intelligenz,
+        welche Pflanze vor dir steht und was sie benötigt.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
 
 # ==================================================
-# SIDEBAR
+# UPLOAD
 # ==================================================
 
-with st.sidebar:
-
-    st.title("🌿 PlantScan")
-
-    st.write("Dein digitaler Pflanzenhelfer.")
-
-    st.divider()
-
-    st.markdown("### Funktionen")
-
-    st.write("📷 Pflanzen erkennen")
-    st.write("🌱 Pflegeinformationen")
-    st.write("⚠️ Giftigkeit überprüfen")
-
-    st.divider()
-
-    st.caption(
-        "Version B – vortrainiertes Hugging-Face-Modell"
-    )
-
-
-# ==================================================
-# BILDUpload
-# ==================================================
-
-st.subheader("📷 Pflanze hochladen")
+st.subheader("📷 Deine Pflanze entdecken")
 
 uploaded_file = st.file_uploader(
-    "Wähle ein Pflanzenfoto aus",
-    type=["jpg", "jpeg", "png", "webp"]
+    "Lade ein Foto deiner Pflanze hoch",
+    type=["jpg", "jpeg", "png", "webp"],
+    key="plant_upload",
+    on_change=reset_selection
 )
 
 
 if uploaded_file is not None:
 
-    try:
+    image = Image.open(uploaded_file)
+    image = ImageOps.exif_transpose(image).convert("RGB")
 
-        image = Image.open(uploaded_file)
+    st.image(
+        image,
+        caption="Deine hochgeladene Pflanze",
+        width=450
+    )
 
-        image = ImageOps.exif_transpose(image).convert("RGB")
+    # Popup automatisch nach dem Upload öffnen
+    if st.session_state.get("view") is None:
+        choose_mode()
 
-        col1, col2 = st.columns(2)
+    # ----------------------------------------------
+    # KI-ERGEBNISSE EINMALIG BERECHNEN
+    # ----------------------------------------------
 
-        with col1:
+    if st.session_state.get("view") is not None:
 
-            st.image(
-                image,
-                caption="Dein Pflanzenfoto",
-                width=350
-            )
+        if st.session_state.get("plant_results") is None:
 
-        with col2:
+            try:
 
-            st.markdown("### Bereit zur Analyse?")
+                with st.spinner("🌿 Die KI untersucht deine Pflanze..."):
 
-            st.write(
-                "PlantScan analysiert das Bild und sucht "
-                "nach den wahrscheinlichsten Pflanzenarten."
-            )
+                    processor, model = load_model()
 
-            analyze = st.button(
-                "🌿 Pflanze erkennen",
-                use_container_width=True
-            )
+                    results = classify_image(
+                        image,
+                        processor,
+                        model
+                    )
 
-        if analyze:
+                    st.session_state["plant_results"] = results
 
-            with st.spinner(
-                "Das KI-Modell wird geladen und analysiert deine Pflanze..."
-            ):
+            except Exception as error:
 
-                processor, model = load_model()
+                st.error("Die Pflanzenanalyse konnte nicht durchgeführt werden.")
+                st.exception(error)
+                st.stop()
 
-                results = classify_image(
-                    image,
-                    processor,
-                    model
-                )
+        results = st.session_state["plant_results"]
 
-            best_result = results[0]
+        best_result = results[0]
+        label = best_result["name"]
+        confidence = best_result["score"] * 100
 
-            label = best_result["name"]
+        plant = get_plant_information(label)
+        toxicity = get_toxicity_information(label)
 
-            confidence = best_result["score"] * 100
+        # ------------------------------------------
+        # PFLEGE-BEREICH
+        # ------------------------------------------
 
-            plant = get_plant_information(label)
-
-            toxicity = get_toxicity_information(label)
+        if st.session_state["view"] == "care":
 
             st.divider()
-
-            st.subheader("🔍 Ergebnis der Erkennung")
+            st.header("🌱 Pflanzenpflege")
 
             st.markdown(
                 f"""
-                <div class="info-card">
-                    <p class="small-text">Wahrscheinlich erkannte Pflanzenart</p>
-                    <p class="result-name">{html.escape(plant["name"])}</p>
-                    <p class="small-text">
-                        Modell-Konfidenz: {confidence:.2f} %
-                    </p>
+                <div class="section-card">
+                    <h2>{html.escape(plant["name"])}</h2>
+                    <p>{html.escape(plant["description"])}</p>
+                    <h3>🌿 Pflegehinweise</h3>
+                    <p>{html.escape(plant["care"])}</p>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            if confidence >= 50:
-
-                st.success(
-                    "Das Modell zeigt eine vergleichsweise hohe Konfidenz. "
-                    "Die Bestimmung ist trotzdem nicht garantiert."
-                )
-
-            else:
-
-                st.warning(
-                    "Die Erkennung ist unsicher. "
-                    "Bitte überprüfe die Pflanzenbestimmung."
-                )
-
-            # ------------------------------------------
-            # PFLANZENINFORMATIONEN
-            # ------------------------------------------
-
-            st.subheader("🌱 Pflanzeninformationen")
-
-            st.write(plant["description"])
-
-            st.markdown("**Allgemeine Pflegehinweise:**")
-
-            st.write(plant["care"])
-
-            # ------------------------------------------
-            # GIFTIGKEITSCHECK
-            # ------------------------------------------
-
-            st.divider()
-
-            st.subheader("⚠️ Giftigkeits- und Gefahrencheck")
+            st.subheader("⚠️ Sicherheitshinweis")
 
             if toxicity["status"] == "giftig":
-
-                st.error(
-                    f"⚠️ {toxicity['title']}"
+                st.warning(
+                    "Für diese Pflanzenart sind mögliche Risiken bekannt: "
+                    + toxicity["details"]
                 )
 
             elif toxicity["status"] == "ungiftig":
-
-                st.success(
-                    f"✓ {toxicity['title']}"
+                st.success(toxicity["title"])
+                st.caption(
+                    "Diese Angabe gilt nur für die in der Datenbank "
+                    "genannte Tiergruppe und ist keine Garantie."
                 )
 
             else:
-
-                st.warning(
-                    f"❔ {toxicity['title']}"
+                st.info(
+                    "Die Giftigkeit ist in unserer Datenbank nicht überprüft. "
+                    "Unbekannt bedeutet nicht ungefährlich."
                 )
+
+        # ------------------------------------------
+        # ERKENNUNGS-BEREICH
+        # ------------------------------------------
+
+        elif st.session_state["view"] == "recognition":
+
+            st.divider()
+            st.header("🔍 KI-Pflanzenerkennung")
+
+            st.markdown(
+                f"""
+                <div class="section-card">
+                    <p style="color:#66806c;">Wahrscheinlichste Pflanzenart</p>
+                    <h2>{html.escape(plant["name"])}</h2>
+                    <p>{confidence:.2f} % Modell-Konfidenz</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.subheader("⚠️ Giftigkeitsprüfung")
+
+            if toxicity["status"] == "giftig":
+                st.error(toxicity["title"])
+
+            elif toxicity["status"] == "ungiftig":
+                st.success(toxicity["title"])
+
+            else:
+                st.warning(toxicity["title"])
 
             st.write(toxicity["details"])
 
@@ -535,55 +353,49 @@ if uploaded_file is not None:
             )
 
             st.info(
-                "Wichtig: Dieser Check ist keine vollständige "
-                "Giftigkeitsprüfung. Die Pflanzenbestimmung kann falsch sein. "
-                "Bitte lasse Pflanzen nicht von Kindern oder Haustieren "
-                "probieren. Bei möglicher Aufnahme einer unbekannten "
-                "oder giftigen Pflanze sollte fachlicher Rat eingeholt werden."
+                "Die KI kann sich bei der Pflanzenbestimmung irren. "
+                "Der Giftigkeitscheck ist keine vollständige Prüfung. "
+                "Bitte behandle unbekannte Pflanzen vorsichtshalber "
+                "als potenziell gefährlich."
             )
 
-            # ------------------------------------------
-            # WEITERE ERGEBNISSE
-            # ------------------------------------------
-
-            st.divider()
-
-            st.subheader("📊 Weitere mögliche Pflanzenarten")
+            st.subheader("📊 Weitere KI-Ergebnisse")
 
             for result in results:
 
                 percentage = result["score"] * 100
 
-                safe_label = html.escape(result["name"])
-
                 st.write(
-                    f"**{safe_label}** – {percentage:.2f} %"
+                    f"**{result['name']}** – {percentage:.2f} %"
                 )
 
-                st.progress(
-                    float(result["score"])
-                )
+                st.progress(float(result["score"]))
 
             st.caption(
-                "Die Prozentwerte beschreiben die Modell-Konfidenz "
-                "innerhalb seiner Klassen. Sie sind keine Garantie "
-                "für die tatsächliche Richtigkeit."
+                "Modell-Konfidenzwerte sind keine Garantie "
+                "für die Richtigkeit der Bestimmung."
             )
 
-    except Exception as error:
+        # ------------------------------------------
+        # ZURÜCK ZUR AUSWAHL
+        # ------------------------------------------
 
-        st.error(
-            "Bei der Verarbeitung ist ein Fehler aufgetreten."
-        )
-
-        st.exception(error)
-
+        if st.button("↩ Zurück zur Auswahl"):
+            st.session_state["view"] = None
+            st.rerun()
 
 else:
 
-    st.info(
-        "Lade ein Foto hoch, um mit der Pflanzenanalyse zu beginnen."
-    )
+    st.markdown("""
+    <div class="section-card">
+        <h3>🌿 Wie funktioniert PlantScan?</h3>
+        <p>
+            1. Lade ein Foto deiner Pflanze hoch.<br>
+            2. Wähle zwischen Pflege und Erkennung.<br>
+            3. Entdecke Informationen und mögliche Risiken.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ==================================================
@@ -593,8 +405,9 @@ else:
 st.divider()
 
 st.markdown("""
-<div style="text-align:center; color:#68796d; padding:15px;">
-    🌿 PlantScan – Ein KI-Schulprojekt<br>
-    <small>Powered by Hugging Face Transformers</small>
+<div style="text-align:center; padding:25px; color:#55745d;">
+    <h3>🌿 PlantScan</h3>
+    Dein digitaler Pflanzenhelfer<br>
+    <small>Ein KI-Schulprojekt</small>
 </div>
 """, unsafe_allow_html=True)

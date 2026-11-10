@@ -39,22 +39,30 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Angepasst an deinen Entwurf)
+# DESIGN & CSS (Mit Rand-Blättern wie auf deinem Bild)
 # ============================================================
 
 st.markdown("""
 <style>
+    /* Gesamt-Hintergrund mit den Blatt-Rändern exakt wie im Entwurf */
     .stApp {
-        background: linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
+        background: 
+            /* Linker Blätter-Rand */
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') left center / 22% 100% no-repeat fixed,
+            /* Rechter Blätter-Rand */
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') right center / 22% 100% no-repeat fixed,
+            /* Sanfter Farbverlauf in der Mitte */
+            linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
     }
 
     header[data-testid="stHeader"] {
         background: transparent;
     }
 
+    /* Inhalt zentrieren und genug Platz für die Ränder lassen */
     .block-container {
-        max-width: 1100px;
-        padding-top: 2rem;
+        max-width: 900px;
+        padding-top: 2.5rem;
         padding-bottom: 4rem;
     }
 
@@ -272,7 +280,7 @@ def load_model():
 
 
 # ============================================================
-# PFLANZEN-DATENBANK & HILFSFUNKTIONEN (Unverändert stabil)
+# PFLANZEN-DATENBANK & HILFSFUNKTIONEN
 # ============================================================
 
 PLANT_INFO = {
@@ -469,7 +477,7 @@ def choose_mode():
 
 
 # ============================================================
-# HEADER BEREICH (EXAKT WIE IM ENTWURF)
+# HEADER BEREICH
 # ============================================================
 
 st.markdown("""
@@ -491,7 +499,7 @@ st.markdown("""
 
 
 # ============================================================
-# UPLOAD BEREICH (IM DESIGN DER KARTE)
+# UPLOAD BEREICH
 # ============================================================
 
 st.markdown("""
@@ -514,7 +522,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 
 if uploaded_file is None:
-    # So funktioniert PlantScan Karte
     st.markdown("""
     <div class="card-container">
         <div class="card-header">

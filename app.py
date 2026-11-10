@@ -250,7 +250,6 @@ def load_model():
 # ============================================================
 
 PLANT_INFO = {
-    # --- Zimmerpflanzen & Klassiker ---
     "monstera deliciosa": {
         "name": "Monstera (Fensterblatt)",
         "description": "Eine tropische Zimmerpflanze mit großen, charakteristisch eingeschnittenen Blättern.",
@@ -311,8 +310,6 @@ PLANT_INFO = {
         "description": "Holziger Stamm mit schopfartig angeordneten, langen und spitzen Blättern.",
         "care": "Heller, sonniger Standort. Mäßig gießen, im Winter noch weniger.",
     },
-
-    # --- Einheimische Bäume & Sträucher in Deutschland ---
     "quercus robur": {
         "name": "Stiel-Eiche",
         "description": "Einer der majestätischsten heimischen Laubbäume mit gelappten Blättern und Eicheln.",
@@ -343,8 +340,6 @@ PLANT_INFO = {
         "description": "Häufigster Nadelbaum in deutschen Wirtschaftswäldern, oft als Weihnachtsbaum genutzt.",
         "care": "Bevorzugt kältere, feuchtere Lagen und saure Böden.",
     },
-
-    # --- Heimische Wiesen- & Gartenblumen ---
     "taraxacum officinale": {
         "name": "Wiesen-Löwenzahn",
         "description": "Bekannte Wildpflanze mit leuchtend gelben Blütenkörbchen und gezahnten Blättern.",
@@ -448,7 +443,7 @@ PLANT_ALIASES = {
 
 
 # ============================================================
-# HILFSFUNKTIONEN
+# HILFSFUNKTIONEN (IMMER AUF DEUTSCH & SICHER)
 # ============================================================
 
 def normalize_name(name):
@@ -466,13 +461,13 @@ def find_database_entry(label, database):
         return database[normalized]
 
     for alias in sorted(PLANT_ALIASES, key=len, reverse=True):
-        if normalized == alias or normalized.startswith(alias + " "):
+        if alias in normalized:
             canonical_name = PLANT_ALIASES[alias]
             if canonical_name in database:
                 return database[canonical_name]
 
     for key in sorted(database, key=len, reverse=True):
-        if normalized == key or normalized.startswith(key + " "):
+        if key in normalized:
             return database[key]
 
     return None
@@ -482,10 +477,13 @@ def get_plant_information(label):
     result = find_database_entry(label, PLANT_INFO)
     if result:
         return result
+    
+    # Automatischer deutscher Fallback, damit niemals ein "komischer" Name da steht!
+    clean_fallback = label.replace("_", " ").capitalize()
     return {
-        "name": label,
-        "description": "Das Modell hat diese Pflanzenart erkannt. In unserer erweiterten Informationsdatenbank liegen dazu noch keine Detailinfos vor.",
-        "care": "Bitte informiere dich anhand des wissenschaftlichen Pflanzennamens über die individuellen Pflegeansprüche.",
+        "name": clean_fallback,
+        "description": f"Das Modell hat diese Pflanze erkannt ({label}). In unserer Datenbank sind hierzu aktuell noch keine spezifischen Zusatzinfos hinterlegt.",
+        "care": "Bitte informiere dich über den genauen Pflanzennamen für optimale Pflegebedingungen.",
     }
 
 
@@ -495,8 +493,8 @@ def get_toxicity_information(label):
         return {"known": True, "details": result["details"], "audience": result["audience"]}
     return {
         "known": False, 
-        "details": "Diese Pflanzenart ist nicht als giftig in unserer Datenbank eingetragen. Das ist keine Garantie für Ungiftigkeit.", 
-        "audience": "Nicht sicher überprüft"
+        "details": "Keine bekannten Giftstoffe in unserer Datenbank hinterlegt. Vorsicht ist dennoch geboten.", 
+        "audience": "Nicht überprüft"
     }
 
 
@@ -509,8 +507,17 @@ def classify_image(image, processor, model):
     top_results = torch.topk(probabilities, k=count)
     results = []
     for score, index in zip(top_results.values, top_results.indices):
-        label = model.config.id2label[index.item()]
-        results.append({"name": str(label), "score": float(score.item())})
+        raw_label = model.config.id2label[index.item()]
+        
+        # Direkt den deutschen Namen aus der DB holen falls vorhanden!
+        db_entry = find_database_entry(raw_label, PLANT_INFO)
+        display_name = db_entry["name"] if db_entry else raw_label.replace("_", " ").capitalize()
+        
+        results.append({
+            "name": display_name,
+            "raw": str(raw_label),
+            "score": float(score.item())
+        })
     return results
 
 
@@ -617,7 +624,7 @@ else:
         elif st.session_state.plant_results:
             results = st.session_state.plant_results
             best_result = results[0]
-            label = best_result["name"]
+            label = best_result["raw"]
             confidence = best_result["score"] * 100
 
             plant = get_plant_information(label)
@@ -645,7 +652,7 @@ else:
                 st.markdown('<div class="section-heading">🌱 Pflanzenpflege & Informationen</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="card-container">
-                    <p class="muted">Erkannte Pflanzenart (Modell-Label: {html.escape(label)})</p>
+                    <p class="muted">Erkannte Pflanzenart</p>
                     <div class="result-name">{html.escape(plant["name"])}</div>
                     <p style="margin-top: 10px;"><b>Beschreibung:</b> {html.escape(plant["description"])}</p>
                     <hr>

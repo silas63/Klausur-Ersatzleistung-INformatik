@@ -39,19 +39,16 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Mit Rand-Blättern wie auf deinem Bild)
+# DESIGN & CSS (Mit Rand-Blättern im Entwurfs-Look)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Gesamt-Hintergrund mit den Blatt-Rändern exakt wie im Entwurf */
+    /* Gesamt-Hintergrund mit den Blatt-Rändern */
     .stApp {
         background: 
-            /* Linker Blätter-Rand */
             url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') left center / 22% 100% no-repeat fixed,
-            /* Rechter Blätter-Rand */
             url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') right center / 22% 100% no-repeat fixed,
-            /* Sanfter Farbverlauf in der Mitte */
             linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
     }
 
@@ -59,14 +56,12 @@ st.markdown("""
         background: transparent;
     }
 
-    /* Inhalt zentrieren und genug Platz für die Ränder lassen */
     .block-container {
         max-width: 900px;
         padding-top: 2.5rem;
         padding-bottom: 4rem;
     }
 
-    /* Header / Titel-Bereich */
     .header-container {
         display: flex;
         justify-content: space-between;
@@ -95,7 +90,6 @@ st.markdown("""
         margin-bottom: 25px;
     }
 
-    /* Hero Banner mit Bild-Hintergrund */
     .hero {
         background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
                     url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
@@ -124,7 +118,6 @@ st.markdown("""
         max-width: 700px;
     }
 
-    /* Container Karten im Stil des Entwurfs */
     .card-container {
         background: #fbfdf9;
         border: 1px solid #dcebd8;
@@ -154,7 +147,6 @@ st.markdown("""
         margin-bottom: 20px;
     }
 
-    /* Nummerierte Schritte für "So funktioniert's" */
     .step-row {
         display: flex;
         align-items: center;
@@ -179,7 +171,6 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader optisch anpassen */
     div[data-testid="stFileUploader"] {
         background: #f4f8f1;
         border: 2px dashed #b8d4b0;
@@ -190,7 +181,6 @@ st.markdown("""
         padding: 15px;
     }
 
-    /* Allgemeine UI Elemente */
     .section-heading {
         color: #174b2e;
         font-size: 24px;
@@ -422,15 +412,19 @@ def get_plant_information(label):
         return result
     return {
         "name": label,
-        "description": "Das Modell hat diese Pflanzenart erkannt. Keine genauen Zusatzinfos hinterlegt.",
-        "care": "Bitte informiere dich über den wissenschaftlichen Pflanzennamen.",
+        "description": "Das Modell hat diese Pflanzenart erkannt. In unserer Informationsdatenbank liegen dazu noch keine genauen Zusatzinfos vor.",
+        "care": "Bitte informiere dich anhand des wissenschaftlichen Pflanzennamens über die individuellen Pflegeansprüche.",
     }
 
 def get_toxicity_information(label):
     result = find_database_entry(label, TOXICITY_INFO)
     if result:
         return {"known": True, "details": result["details"], "audience": result["audience"]}
-    return {"known": False, "details": "Nicht in der Giftigkeitsdatenbank enthalten.", "audience": "Nicht überprüft"}
+    return {
+        "known": False, 
+        "details": "Diese Pflanzenart ist nicht in unserer Giftigkeitsdatenbank enthalten. Daraus lässt sich nicht schließen, dass sie ungiftig ist.", 
+        "audience": "Nicht sicher überprüft"
+    }
 
 def classify_image(image, processor, model):
     inputs = processor(images=image, return_tensors="pt")
@@ -561,96 +555,108 @@ else:
 
         st.image(image, caption="Dein hochgeladenes Pflanzenfoto", width=400)
 
+        # Popup anzeigen, falls noch kein Modus gewählt wurde
         if st.session_state.view is None:
             choose_mode()
 
-        if st.session_state.view is not None:
-            if st.session_state.plant_results is None:
-                try:
-                    with st.spinner("🌿 Die KI untersucht deine Pflanze..."):
-                        processor, model = load_model()
-                        results = classify_image(image, processor, model)
-                        st.session_state.plant_results = results
-                        st.session_state.analysis_error = None
-                except Exception as error:
-                    st.session_state.analysis_error = str(error)
+        # KI-Analyse ausführen, falls noch nicht geschehen
+        if st.session_state.plant_results is None:
+            try:
+                with st.spinner("🌿 Die KI untersucht deine Pflanze..."):
+                    processor, model = load_model()
+                    results = classify_image(image, processor, model)
+                    st.session_state.plant_results = results
+                    st.session_state.analysis_error = None
+            except Exception as error:
+                st.session_state.analysis_error = str(error)
 
-            if st.session_state.analysis_error:
-                st.error("Die Pflanzenanalyse konnte nicht durchgeführt werden.")
-                st.code(st.session_state.analysis_error)
+        if st.session_state.analysis_error:
+            st.error("Die Pflanzenanalyse konnte nicht durchgeführt werden.")
+            st.code(st.session_state.analysis_error)
 
-            elif st.session_state.plant_results:
-                results = st.session_state.plant_results
-                best_result = results[0]
-                label = best_result["name"]
-                confidence = best_result["score"] * 100
+        elif st.session_state.plant_results:
+            results = st.session_state.plant_results
+            best_result = results[0]
+            label = best_result["name"]
+            confidence = best_result["score"] * 100
 
-                plant = get_plant_information(label)
-                toxicity = get_toxicity_information(label)
+            plant = get_plant_information(label)
+            toxicity = get_toxicity_information(label)
 
-                st.divider()
+            st.divider()
 
-                # PFLEGE VIEW
-                if st.session_state.view == "care":
-                    st.markdown('<div class="section-heading">🌱 Pflanzenpflege</div>', unsafe_allow_html=True)
-                    st.markdown(f"""
-                    <div class="card-container">
-                        <p class="muted">Erkannte Pflanzenart</p>
-                        <div class="result-name">{html.escape(plant["name"])}</div>
-                        <p>{html.escape(plant["description"])}</p>
-                        <hr>
-                        <h3>💧 Pflegehinweise</h3>
-                        <p>{html.escape(plant["care"])}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+            # ----------------------------------------
+            # ANSICHT: PFLEGE
+            # ----------------------------------------
+            if st.session_state.view == "care":
+                st.markdown('<div class="section-heading">🌱 Pflanzenpflege</div>', unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class="card-container">
+                    <p class="muted">Erkannte Pflanzenart</p>
+                    <div class="result-name">{html.escape(plant["name"])}</div>
+                    <p>{html.escape(plant["description"])}</p>
+                    <hr>
+                    <h3>💧 Pflegehinweise</h3>
+                    <p>{html.escape(plant["care"])}</p>
+                </div>
+                """, unsafe_allow_html=True)
 
-                    st.subheader("⚠️ Sicherheit")
-                    if toxicity["known"]:
-                        st.warning("Mögliche Giftigkeit: " + toxicity["details"])
-                    else:
-                        st.info("Giftigkeit nicht überprüft: " + toxicity["details"])
-                    st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
+                st.subheader("⚠️ Sicherheit & Giftigkeit")
+                if toxicity["known"]:
+                    st.warning("Mögliche Giftigkeit: " + toxicity["details"])
+                else:
+                    st.info("Giftigkeit nicht überprüft: " + toxicity["details"])
+                st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
 
-                # ERKENNUNG VIEW
-                elif st.session_state.view == "recognition":
-                    st.markdown('<div class="section-heading">🔍 KI-Pflanzenerkennung</div>', unsafe_allow_html=True)
-                    st.markdown(f"""
-                    <div class="card-container">
-                        <p class="muted">Wahrscheinlichste Pflanzenart</p>
-                        <div class="result-name">{html.escape(plant["name"])}</div>
-                        <p>{html.escape(label)}</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+            # ----------------------------------------
+            # ANSICHT: ERKENNUNG
+            # ----------------------------------------
+            elif st.session_state.view == "recognition":
+                st.markdown('<div class="section-heading">🔍 KI-Pflanzenerkennung</div>', unsafe_allow_html=True)
+                st.markdown(f"""
+                <div class="card-container">
+                    <p class="muted">Wahrscheinlichste Pflanzenart</p>
+                    <div class="result-name">{html.escape(plant["name"])}</div>
+                    <p><b>Wissenschaftlicher Name:</b> {html.escape(label)}</p>
+                    <p>{html.escape(plant["description"])}</p>
+                </div>
+                """, unsafe_allow_html=True)
 
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.metric("Modell-Konfidenz", f"{confidence:.2f} %")
-                    with col2:
-                        st.metric("Weitere Ergebnisse", len(results))
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("Modell-Konfidenz", f"{confidence:.2f} %")
+                with col2:
+                    st.metric("Weitere Ergebnisse", len(results))
 
-                    if confidence < 50:
-                        st.warning("Die Erkennung ist unsicher. Bitte überprüfe die Bestimmung.")
-                    else:
-                        st.info("Das Modell zeigt eine hohe Konfidenz.")
+                if confidence < 50:
+                    st.warning("Die Erkennung ist unsicher. Bitte überprüfe die Pflanzenbestimmung.")
+                else:
+                    st.info("Das Modell zeigt eine vergleichsweise hohe Konfidenz. Eine sichere Bestimmung ist dadurch nicht garantiert.")
 
-                    st.subheader("⚠️ Giftigkeitscheck")
-                    if toxicity["known"]:
-                        st.error("Für diese Pflanzenart sind mögliche Risiken bekannt.")
-                    else:
-                        st.warning("Giftigkeit nicht überprüft – unbekannt bedeutet nicht ungefährlich.")
-                    st.write(toxicity["details"])
-                    st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
+                st.subheader("⚠️ Giftigkeitscheck")
+                if toxicity["known"]:
+                    st.error("Für diese Pflanzenart sind mögliche Risiken bekannt.")
+                else:
+                    st.warning("Giftigkeit nicht überprüft – unbekannt bedeutet nicht ungefährlich.")
+                
+                st.write(toxicity["details"])
+                st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
 
-                    st.subheader("📊 Weitere KI-Ergebnisse")
-                    for result in results:
-                        percentage = result["score"] * 100
-                        st.write(f"**{result['name']}** – {percentage:.2f} %")
-                        st.progress(float(result["score"]))
+                st.info("Die Pflanzenbestimmung kann falsch sein. Dieser Check ist keine vollständige Giftigkeitsprüfung. Bei unbekannten Pflanzen sollten Menschen und Haustiere vorsichtig sein.")
 
-                st.divider()
-                if st.button("↩ Zurück zur Auswahl", use_container_width=True):
-                    st.session_state.view = None
-                    st.rerun()
+                st.subheader("📊 Weitere KI-Ergebnisse")
+                for result in results:
+                    percentage = result["score"] * 100
+                    st.write(f"**{result['name']}** – {percentage:.2f} %")
+                    st.progress(float(result["score"]))
+
+                st.caption("Die Prozentwerte zeigen die Modell-Konfidenz innerhalb seiner Klassen und sind keine Garantie für die tatsächliche Richtigkeit.")
+
+            # Zurück-Button, um wieder zur Auswahl zu gelangen
+            st.divider()
+            if st.button("↩ Zurück zur Auswahl", use_container_width=True):
+                st.session_state.view = None
+                st.rerun()
 
     except Exception as error:
         st.error("Das Bild konnte nicht verarbeitet werden.")

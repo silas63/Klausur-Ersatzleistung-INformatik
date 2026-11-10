@@ -39,7 +39,7 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Mit Rand-Blättern im Entwurfs-Look)
+# DESIGN & CSS (Exakt wie auf deinem Design-Bild)
 # ============================================================
 
 st.markdown("""
@@ -56,39 +56,85 @@ st.markdown("""
     }
 
     .block-container {
-        max-width: 900px;
-        padding-top: 2.5rem;
+        max-width: 950px;
+        padding-top: 2rem;
         padding-bottom: 4rem;
     }
 
-    .header-container {
+    /* Top-Bar mit Titel, Icons rechts und Untertitel */
+    .top-header-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 5px;
+        width: 100%;
+        margin-bottom: 4px;
     }
 
-    .main-title-box {
+    .title-left {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 16px;
+    }
+
+    .logo-badge {
+        background: #287344;
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 6px 16px rgba(40,115,68,0.25);
     }
 
     .main-title {
         color: #174b2e;
-        font-size: 44px;
+        font-size: 46px;
         font-weight: 800;
         letter-spacing: -1.5px;
         margin: 0;
-        line-height: 1.1;
+        line-height: 1;
+    }
+
+    .top-right-icons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .icon-pill {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid #dcebd8;
+        padding: 8px 14px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(30,80,40,0.06);
+    }
+
+    .profile-circle {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid #dcebd8;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 12px rgba(30,80,40,0.06);
     }
 
     .subtitle {
         color: #5c7960;
-        font-size: 17px;
-        margin-bottom: 25px;
+        font-size: 16px;
+        margin-bottom: 22px;
+        margin-top: 2px;
     }
 
+    /* Hero Banner im exakten Entwurfs-Look */
     .hero {
         background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
                     url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
@@ -97,32 +143,33 @@ st.markdown("""
         padding: 36px 40px;
         border-radius: 24px;
         color: white;
-        margin: 15px 0 25px 0;
+        margin: 10px 0 24px 0;
         box-shadow: 0 10px 30px rgba(23,75,46,0.15);
     }
 
     .hero h2 {
         color: white !important;
-        font-size: 28px;
+        font-size: 26px;
         margin-top: 0;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         font-weight: 700;
     }
 
     .hero p {
         color: #e4f2e6;
         font-size: 15px;
-        line-height: 1.6;
+        line-height: 1.5;
         margin: 0;
-        max-width: 700px;
+        max-width: 680px;
     }
 
+    /* Karten-Container im Bild-Stil */
     .card-container {
         background: #fbfdf9;
         border: 1px solid #dcebd8;
         border-radius: 24px;
-        padding: 30px;
-        margin-bottom: 25px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
         box-shadow: 0 8px 24px rgba(30, 80, 40, 0.05);
     }
 
@@ -130,7 +177,18 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+    }
+
+    .card-icon-box {
+        background: #e6f2e0;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
     }
 
     .card-title {
@@ -143,9 +201,11 @@ st.markdown("""
     .card-desc {
         color: #617566;
         font-size: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
+        margin-left: 58px;
     }
 
+    /* Nummerierte Schritte für "So funktioniert PlantScan" */
     .step-row {
         display: flex;
         align-items: center;
@@ -170,14 +230,17 @@ st.markdown("""
         flex-shrink: 0;
     }
 
+    /* Streamlit File Uploader optisch anpassen (Gestrichelte Box wie im Bild) */
     div[data-testid="stFileUploader"] {
-        background: #f4f8f1;
+        background: #f5f9f2;
         border: 2px dashed #b8d4b0;
-        border-radius: 18px;
+        border-radius: 16px;
         padding: 10px;
+        margin-left: 58px;
+        width: calc(100% - 58px);
     }
     div[data-testid="stFileUploader"] section {
-        padding: 15px;
+        padding: 12px;
     }
 
     .section-heading {
@@ -246,7 +309,7 @@ def load_model():
 
 
 # ============================================================
-# AUSFÜHRLICHE PFLANZEN-DATENBANK (Extrem lange & detaillierte Infotexte)
+# PFLANZEN-DATENBANK
 # ============================================================
 
 PLANT_INFO = {
@@ -257,108 +320,108 @@ PLANT_INFO = {
     },
     "sansevieria trifasciata": {
         "name": "Bogenhanf (Sansevieria)",
-        "description": "Der Bogenhanf ist eine der absolut robustesten und anspruchslosesten Zimmer überhaupt. Ursprünglich in den trockenen Regionen Westafrikas beheimatet, speichert er Wasser in seinen dickfleischigen, aufrecht stehenden Blättern. Zudem gilt er als hervorragender Luftreiniger, der Schadstoffe aus der Raumluft filtern kann und auch nachts Sauerstoff abgibt.",
-        "care": "• Standort: Kommt mit fast jedem Standort klar – von sonnig bis schattig. Ein heller Platz fördert jedoch die intensive Blattzeichnung.\n• Gießen: Äußerst sparsam! Lieber zu wenig als zu viel gießen. Die Erde vor dem nächsten Wässern komplett austrocknen lassen.\n• Besonderheit: Perfekt für Anfänger oder Menschen mit einem 'weniger grünen Daumen', da sie wochenlange Trockenheit problemlos verzeiht.",
+        "description": "Der Bogenhanf ist eine der absolut robustesten und anspruchslosesten Zimmerpflanzen überhaupt. Ursprünglich in den trockenen Regionen Westafrikas beheimatet, speichert er Wasser in seinen dickfleischigen, aufrecht stehenden Blättern. Zudem gilt er als hervorragender Luftreiniger, der Schadstoffe aus der Raumluft filtern kann.",
+        "care": "• Standort: Kommt mit fast jedem Standort klar – von sonnig bis schattig. Ein heller Platz fördert jedoch die intensive Blattzeichnung.\n• Gießen: Äußerst sparsam! Lieber zu wenig als zu viel gießen. Die Erde vor dem nächsten Wässern komplett austrocknen lassen.\n• Besonderheit: Perfekt für Anfänger, da sie wochenlange Trockenheit problemlos verzeiht.",
     },
     "chlorophytum comosum": {
         "name": "Grünlilie",
-        "description": "Die Grünlilie ist ein echter Klassiker in deutschen Haushalten. Sie zeichnet sich durch schmale, bogenförmig überhängende Blätter aus, die meist grün-weiß gestreift sind. An langen Ausläufern bildet sie kleine Tochterpflanzen (Ableger), die sich super leicht vermehren lassen. Sie ist ungiftig und absolut unkompliziert.",
-        "care": "• Standort: Hell bis halbschattig, direkte pralle Sonne sollte jedoch vermieden werden.\n• Gießen: Gleichmäßig feucht halten. Im Frühling und Sommer regelmäßig gießen, im Winter etwas weniger.\n• Düngung: Von März bis August alle zwei Wochen mit einem milden Flüssigdünger versorgen, um das Wachstum und die Blattfarbe zu unterstützen.",
+        "description": "Die Grünlilie ist ein echter Klassiker in deutschen Haushalten. Sie zeichnet sich durch schmale, bogenförmig überhängende Blätter aus, die meist grün-weiß gestreift sind. An langen Ausläufern bildet sie kleine Tochterpflanzen (Ableger), die sich super leicht vermehren lassen.",
+        "care": "• Standort: Hell bis halbschattig, direkte pralle Sonne sollte vermieden werden.\n• Gießen: Gleichmäßig feucht halten. Im Frühling und Sommer regelmäßig gießen, im Winter etwas weniger.\n• Düngung: Von März bis August alle zwei Wochen mit einem milden Flüssigdünger versorgen.",
     },
     "aloe vera": {
         "name": "Aloe vera",
-        "description": "Die Echte Aloe ist eine sukkulente Heilpflanze aus der Familie der Affodillgewächse. Sie bildet dicke, fleischige Rosettenblätter, die ein durchsichtiges, feuchtigkeitsspendendes Gel enthalten. Dieses Gel wird seit Jahrtausenden in der Naturheilkunde und Kosmetik zur Hautpflege bei Sonnenbrand oder leichten Verbrennungen eingesetzt.",
-        "care": "• Standort: Ein vollsonniger, warmer und luftiger Platz (gerne auf der Südfensterbank) ist ideal.\n• Gießen: Sehr sparsam gießen. Das Substrat sollte absolut durchlässig (Kakteenerde) sein. Staunässe führt sofort zum Absterben der Wurzeln.\n• Winterruhe: Im Winter kühler (ca. 10–15 °C) stellen und extrem wenig gießen.",
+        "description": "Die Echte Aloe ist eine sukkulente Heilpflanze aus der Familie der Affodillgewächse. Sie bildet dicke, fleischige Rosettenblätter, die ein durchsichtiges, feuchtigkeitsspendendes Gel enthalten, welches in der Naturheilkunde geschätzt wird.",
+        "care": "• Standort: Ein vollsonniger, warmer und luftiger Platz (gerne auf der Südfensterbank) ist ideal.\n• Gießen: Sehr sparsam gießen. Das Substrat sollte absolut durchlässig sein. Staunässe führt sofort zum Absterben der Wurzeln.",
     },
     "zamioculcas zamiifolia": {
         "name": "Glücksfeder",
-        "description": "Die Glücksfeder (Zamioculcas) hat glänzende, dunkelgrüne Blätter, die wie aufgereiht an kräftigen Stielen sitzen. Sie besitzt unter der Erde dicke Speicherknollen, mit denen sie Trockenperioden spielend überbrückt. Sie wächst langsam, bleibt kompakt und sieht durch ihren glänzenden Wuchs fast künstlich und extrem edel aus.",
-        "care": "• Standort: Extrem flexibel. Sie toleriert dunkle Ecken im Raum, wächst an hellen Standorten jedoch etwas schneller.\n• Gießen: Erst gießen, wenn die Erde komplett trocken ist. Lieber einmal zu wenig als zu viel Wasser geben.\n• Pflege-Tipp: Gelegentlich die Blätter mit einem feuchten Tuch entstauben, damit sie ihren edlen Glanz behalten.",
+        "description": "Die Glücksfeder (Zamioculcas) hat glänzende, dunkelgrüne Blätter, die wie aufgereiht an kräftigen Stielen sitzen. Sie besitzt unter der Erde dicke Speicherknollen, mit denen sie Trockenperioden spielend überbrückt.",
+        "care": "• Standort: Extrem flexibel. Sie toleriert dunkle Ecken im Raum, wächst an hellen Standorten jedoch etwas schneller.\n• Gießen: Erst gießen, wenn die Erde komplett trocken ist. Lieber einmal zu wenig als zu viel Wasser geben.",
     },
     "epipremnum aureum": {
         "name": "Efeutute",
-        "description": "Die Efeutute ist eine wüchsige, grüne Kletter- und Ampelpflanze mit herzförmigen Blättern, die oft goldgelb oder weiß panaschiert sind. Sie rankt Meter um Meter an Wänden, Regalen oder Rankhilfen entlang und gehört zu den besten Luftverbesserern unter den Zimmerpflanzen.",
-        "care": "• Standort: Hell bis halbschattig. Je heller der Standort (ohne direkte Sonne), desto ausgeprägter ist die helle Blattmusterung.\n• Gießen: Mäßig feucht halten. Die Oberfläche antrocknen lassen, dann durchdringend gießen.\n• Vermehrung: Lässt sich extrem leicht über Stecklinge vermehren, die man einfach in ein Glas Wasser stellt, bis sie Wurzeln bilden.",
+        "description": "Die Efeutute ist eine wüchsige, grüne Kletter- und Ampelpflanze mit herzförmigen Blättern, die oft goldgelb oder weiß panaschiert sind. Sie rankt Meter um Meter an Wänden und Regalen entlang.",
+        "care": "• Standort: Hell bis halbschattiger Standort ohne direkte Sonne.\n• Gießen: Mäßig feucht halten. Die Oberfläche antrocknen lassen, dann durchdringend gießen.",
     },
     "ficus elastica": {
         "name": "Gummibaum",
-        "description": "Der Gummibaum imponiert durch seine großen, derartigen, dunkelgrünen Blätter, die majestätisch nach oben streben. Früher ein absoluter Pflichtbestandteil in jedem deutschen Wohnzimmer, erlebt er aktuell ein großes Comeback. Er kann bei guter Pflege im Zimmer im Laufe der Jahre zu einem echten kleinen Baum heranwachsen.",
-        "care": "• Standort: Sehr hell, gerne mit etwas morgendlicher oder abendlicher Sonne, aber ohne brennende Hitze.\n• Gießen: Mäßige Wassergaben mit kalkarmem Wasser bei Zimmertemperatur. Keine Staunässe.\n• Besonderheit: Bei Verletzungen tritt ein milchiger Saft aus, der bei empfindlichen Personen leichte Hautreizungen auslösen kann.",
+        "description": "Der Gummibaum imponiert durch seine großen, lederartigen, dunkelgrünen Blätter, die majestätisch nach oben streben. Bei guter Pflege kann er im Zimmer im Laufe der Jahre zu einem kleinen Baum heranwachsen.",
+        "care": "• Standort: Sehr hell, gerne mit etwas morgendlicher oder abendlicher Sonne.\n• Gießen: Mäßige Wassergaben mit kalkarmem Wasser bei Zimmertemperatur.",
     },
     "ficus lyrata": {
         "name": "Geigenfeige",
-        "description": "Die Geigenfeige verdankt ihren Namen den großen, geigen- beziehungsweise leierförmigen Blättern mit markanten hellerleuchteten Blattadern. Sie ist ein echter Hingucker für moderne Interieurs, verlangt allerdings einen standorttreuen Platz, da sie auf Standortwechsel oft mit leichtem Blattabwurf reagieren kann.",
-        "care": "• Standort: Sehr hell, geschützt vor kalter Zugluft und direkter Mittagssonne.\n• Gießen: Gleichmäßig leicht feucht halten. Staunässe führt hier extrem schnell zu braunen Blatträndern.\n• Luftfeuchtigkeit: Da sie tropisch veranlagt ist, liebt sie es, ab und zu mit kalkfreiem Wasser besprüht zu werden.",
+        "description": "Die Geigenfeige verdankt ihren Namen den großen, geigen- beziehungsweise leierförmigen Blättern mit markanten hellerleuchteten Blattadern. Ein echter Hingucker für moderne Interieurs.",
+        "care": "• Standort: Sehr hell, geschützt vor kalter Zugluft und direkter Mittagssonne.\n• Gießen: Gleichmäßig leicht feucht halten. Staunässe führt zu braunen Blatträndern.",
     },
     "spathiphyllum wallisii": {
         "name": "Einblatt",
-        "description": "Das Einblatt zeichnet sich durch seine sattgrünen, lanzettlichen Blätter und die markanten weißen Hochblätter (Spathen) aus, die wie elegante Segel über der Pflanze thronen. Es ist eine der wenigen Zimmerpflanzen, die bei guter Pflege im Haus verlässlich und über Wochen hinweg wunderschöne weiße Blüten hervorbringen.",
-        "care": "• Standort: Halbschattig bis hell, aber keinesfalls direkte Sonne. Auch für schattigere Bäder oder Flure geeignet.\n• Gießen: Hoher Wasserbedarf! Die Erde sollte stets leicht feucht gehalten werden. Trocknet sie komplett aus, lässt das Einblatt sofort die Blätter hängen (erholt sich nach dem Gießen aber meist schnell wieder).\n• Luftfeuchtigkeit: Hohe Luftfeuchtigkeit dankt sie mit prächtigem Wachstum.",
+        "description": "Das Einblatt zeichnet sich durch seine sattgrünen Blätter und die markanten weißen Hochblätter aus. Es ist eine der wenigen Zimmerpflanzen, die im Haus verlässlich weiße Blüten hervorbringen.",
+        "care": "• Standort: Halbschattig bis hell, keinesfalls direkte Sonne.\n• Gießen: Hoher Wasserbedarf! Die Erde sollte stets leicht feucht gehalten werden.",
     },
     "dracaena marginata": {
         "name": "Drachenbaum",
-        "description": "Der Drachenbaum erinnert optisch an eine Palme, gehört botanisch jedoch zu den Spargelgewächsen (Asparagaceae). Er besitzt schlanke, verholzte Stämme und schopfartig am Ende sitzende, schmal-lanzettliche Blätter, die oft einen wunderschönen rötlichen Rand aufweisen. Er ist extrem pflegeleicht und langlebig.",
-        "care": "• Standort: Hell bis halbschattig. Je heller der Standort, desto intensiver leuchtet die rote Färbung der Blätter.\n• Gießen: Mäßig gießen. Die Erde vor dem erneuten Gießen gut antrocknen lassen. Im Winter den Wasserbedarf noch weiter reduzieren.\n• Schnitt: Zu lang gewordene Stämme können problemlos abgeschnitten werden; sie treiben kurz darauf an der Schnittstelle neu aus.",
+        "description": "Der Drachenbaum erinnert optisch an eine Palme, besitzt schlanke, verholzte Stämme und schopfartig sitzende Blätter mit rötlichem Rand. Extrem pflegeleicht und langlebig.",
+        "care": "• Standort: Hell bis halbschattig.\n• Gießen: Mäßig gießen. Die Erde vor dem erneuten Gießen gut antrocknen lassen.",
     },
     "crassula ovata": {
         "name": "Geldbaum (Kirchbäumchen)",
-        "description": "Der Geldbaum ist eine klassische Sukkulente mit dicken, fleischigen, ovalen Blättern, die Wasser speichern. Mit der Zeit bildet er einen dicken, holzigen Stamm und eine baumartige Krone aus. In der chinesischen Feng-Shui-Lehre gilt er als glückbringender und reichtumsfördernder Hausschmuck.",
-        "care": "• Standort: Ein sonniger, warmer Platz am Fenster ist optimal. Im Sommer steht er auch gerne geschützt im Freien.\n• Gießen: Sparsam gießen. Erst wenn die Erde komplett ausgetrocknet ist, wird durchdringend gewässert.\n• Erde: Spezielle Kakteen- oder Sukkulentenerde mit hohem Sand- und Mineralanteil verwenden.",
+        "description": "Klassische Sukkulente mit dicken, fleischigen, ovalen Blättern. Im Feng-Shui gilt er als glückbringender Hausschmuck.",
+        "care": "• Standort: Ein sonniger, warmer Platz am Fenster ist optimal.\n• Gießen: Sparsam gießen. Erst wenn die Erde komplett ausgetrocknet ist.",
     },
     "yucca elephantipes": {
         "name": "Yucca-Palme (Palmlilie)",
-        "description": "Die Yucca-Palme besitzt einen kräftigen, palmenähnlichen Stamm (der an Elefantenfüße erinnert) und schopfartig angeordnete, lange, steif-spitze Blätter. Sie ist eine sehr robuste, lichthungrige Pflanze, die auch in trockener Zimmerluft hervorragend gedeiht.",
-        "care": "• Standort: Maximal hell, gerne vollsonnig. Ein Südfenster oder ein heller Wintergarten sind perfekt.\n• Gießen: Während der Wachstumsphase im Sommer mäßig gießen, im Winter deutlich sparsamer halten.\n• Rückschnitt: Zu große Exemplare können im Frühjahr problemlos gekürzt werden, da sie aus dem Stamm willig wieder austreiben.",
+        "description": "Besitzt einen kräftigen Stamm und schopfartig angeordnete, lange, steif-spitze Blätter. Gedeiht auch in trockener Zimmerluft hervorragend.",
+        "care": "• Standort: Maximal hell, gerne vollsonnig (Südfenster).\n• Gießen: Mäßig gießen, im Winter noch sparsamer.",
     },
     "quercus robur": {
         "name": "Stiel-Eiche",
-        "description": "Die Stiel-Eiche ist einer der bedeutendsten und langlebigsten heimischen Laubbäume in Mitteleuropa. Sie kann Hunderte von Jahren alt werden, entwickelt eine mächtige, knorrige Krone und tief eingekerbte Blätter. Ökologisch bietet sie Hunderten von Insekten- und Vogelarten einen unverzichtbaren Lebensraum.",
-        "care": "• Standort: Ausschließlich im Freien an vollsonnigen Standorten in großen Gärten, Parks oder in freier Natur.\n• Boden: Tiefgründige, nährstoffreiche und humose Böden mit guter Wasserversorgung.\n• Pflege: Ausgewachsene Exemplare benötigen im Garten keine Pflege und versorgen sich komplett selbst.",
+        "description": "Einer der majestätischsten heimischen Laubbäume mit gelappten Blättern und Eicheln. Wird Hunderte Jahre alt.",
+        "care": "• Standort: Ausschließlich im Freien an vollsonnigen Standorten.\n• Boden: Tiefgründige, nährstoffreiche und humose Böden.",
     },
     "fagus sylvatica": {
         "name": "Rot-Buche",
-        "description": "Die Rot-Buche prägt als dominanter Laubbaum weite Teile der mitteleuropäischen Wälder. Sie hat eine glatte, silbergraue Rinde und leicht gewellte Blätter, die im Herbst wunderschön goldbraun leuchten und oft den ganzen Winter über am Baum haften bleiben.",
-        "care": "• Standort: Als stattlicher Wald- und Parkbaum im Freien, bevorzugt in kühleren, feuchteren Regionen.\n• Boden: Frische, nährstoffreiche, kalkhaltige bis leicht saure Ton- und Lehmböden.\n• Verwendung: Häufig auch als formgeschnittene Hecke in großen Grundstücken im Einsatz.",
+        "description": "Prägt als dominanter Laubbaum weite Teile der mitteleuropäischen Wälder mit glatter Rinde.",
+        "care": "• Standort: Als Wald- und Parkbaum im Freien.\n• Boden: Frische, nährstoffreiche, kalkhaltige Böden.",
     },
     "betula pendula": {
         "name": "Sand-Birke",
-        "description": "Die Sand-Birke (auch Hänge-Birke genannt) ist sofort an ihrer leuchtend weißen Rinde (Papierrinde) und den elegant herabhängenden Zweigen erkennbar. Sie ist ein sogenannter Pionierbaum, der rasch auf kahlen Flächen wächst und viel Licht benötigt.",
-        "care": "• Standort: Volle Sonne. Die Birke ist ein extremer 'Lichtliebhaber' und verträgt keinerlei Schatten.\n• Boden: Gedeiht selbst auf sehr mageren, sandigen oder trockenen Böden problemlos.\n• Besonderheit: Sie hat einen extrem hohen Wasserbedarf, was bei Pflanzung in Hausnähe im Sommer beachtet werden muss.",
+        "description": "Sofort an ihrer leuchtend weißen Rinde und den elegant herabhängenden Zweigen erkennbar.",
+        "care": "• Standort: Volle Sonne. Ein absoluter 'Lichtliebhaber'.\n• Boden: Gedeiht selbst auf sehr mageren Sandböden.",
     },
     "acer pseudoplatanus": {
         "name": "Berg-Ahorn",
-        "description": "Der Berg-Ahorn ist ein stattlicher, rasch wachsender Laubbaum mit großen, fünfzipfeligen Blättern. Im Herbst verfärben sich die Blätter leuchtend gelb. Im Frühjahr produziert er in großer Zahl geflügelte Spaltfrüchte (die sogenannten 'Helikopter'), die vom Wind weit fortgetragen werden.",
-        "care": "• Standort: Sonnig bis halbschattig, ideal für große Gärten, Alleen und Parkanlagen.\n• Boden: Nährstoffreiche, tiefgründige und frische Böden.\n• Pflege: Äußerst windfest und robust gegen raues Klima in höheren Berglagen.",
+        "description": "Stattlicher, rasch wachsender Laubbaum mit großen, fünfzipfeligen Blättern und geflügelten Früchten.",
+        "care": "• Standort: Sonnig bis halbschattig in großen Gärten und Parks.",
     },
     "pinus sylvestris": {
         "name": "Wald-Kiefer (Föhre)",
-        "description": "Die Wald-Kiefer ist ein immergrüner Nadelbaum, der im oberen Stammbereich eine charakteristisch rotbraune, abblätternde Rinde und blaugrüne, büschelig stehende Nadeln aufweist. Sie ist extrem anpassungsfähig an karge Standorte.",
-        "care": "• Standort: Volle Sonne. Benötigt einen sehr hellen und luftigen Standort im Garten.\n• Boden: Kommt mit trockenen, sandigen und saurem Böden bestens zurecht, wo andere Bäume versagen.\n• Gießen: Nur in der Anwachsphase nach dem Pflanzen; danach absolut pflegeleicht.",
+        "description": "Immergrüner Nadelbaum mit rotbrauner, abblätternder Rinde im oberen Stammbereich.",
+        "care": "• Standort: Volle Sonne und ein luftiger Platz im Garten.",
     },
     "picea abies": {
         "name": "Gemeine Fichte (Rotfichte)",
-        "description": "Die Rotfichte ist der in Deutschland am weitesten verbreitete Nadelbaum und wird traditionell als klassischer Weihnachtsbaum geschätzt. Sie hat dunkelgrüne Nadeln, die vierkantig geformt sind, und hängt herabhängende Zapfen ab.",
-        "care": "• Standort: Kühle, feuchtere Standorte im Freien.\n• Boden: Vorzugsweise saure, humose Waldböden mit gleichmäßiger Feuchtigkeit.\n• Pflege: In heißen Sommernsummen anfällig für Trockenstress und Borkenkäferbefall.",
+        "description": "Der in Deutschland am weitesten verbreitete Nadelbaum und klassischer Weihnachtsbaum.",
+        "care": "• Standort: Kühle, feuchtere Standorte im Freien.",
     },
     "taraxacum officinale": {
         "name": "Wiesen-Löwenzahn",
-        "description": "Der Wiesen-Löwenzahn ist eine unverkennbare Wildpflanze mit leuchtend gelben Blütenköpfen und stark gezahnten Rosettenblättern. Aus den verblühten Köpfchen entstehen die bekannten, kugelförmigen Pusteblumen, deren Samen vom Wind davongetragen werden. Er gilt oft als Wildkraut, ist aber eine wichtige Bienenweide.",
-        "care": "• Standort: Sonnig bis halbschattig auf Wiesen, Rasenflächen und in Gärten.\n• Pflege: Wächst wild und benötigt keinerlei aktive Pflege.",
+        "description": "Wildpflanze mit gelben Blütenkörben und Pusteblumen-Samen. Wichtige Bienenweide.",
+        "care": "• Standort: Sonnig bis halbschattig auf Wiesen und Rasenflächen.",
     },
     "bellis perennis": {
         "name": "Gänseblümchen (Tausendschön)",
-        "description": "Das Gänseblümchen ist eine winzige, zarte Wiesenblume mit weiß-rosa Blütenblättern und einer gelben Scheibe in der Mitte. Es blüht bei milder Witterung fast das ganze Jahr über und schließt seine Blüten bei Regen oder Nacht.",
-        "care": "• Standort: Sonnige bis halbschattige Rasenflächen und Wiesen.\n• Pflege: Völlig unempfindlich gegenüber regelmäßigem Rasenmähen.",
+        "description": "Zarte Wiesenblume mit weiß-rosa Blütenblättern, die sich bei Nacht oder Regen schließen.",
+        "care": "• Standort: Sonnige bis halbschattige Rasenflächen.",
     },
     "urtica dioica": {
         "name": "Große Brennnessel",
-        "description": "Die Große Brennnessel ist eine heimische Wildpflanze, die mit feinen Brennhaaren besetzt ist, die bei Berührung Ameisensäure abgeben. Trotz ihrer Wehrhaftigkeit ist sie ökologisch extrem wertvoll, da sie als Raupenfutterpflanze für über 50 heimische Schmetterlingsarten dient.",
-        "care": "• Standort: Stickstoffreiche, nährstoffreiche Böden in Hecken, Waldrändern oder auf Brachflächen.\n• Pflege: Wächst wild und stark wuchernd.",
+        "description": "Heimische Wildpflanze mit Brennhaaren, extrem wertvoll als Raupenfutter für Schmetterlinge.",
+        "care": "• Standort: Nährstoffreiche Standorte an Waldrändern.",
     },
     "rosa canina": {
         "name": "Hunds-Rose (Heckenrose)",
-        "description": "Die Hunds-Rose ist ein heimischer Wildstrauch mit zarten rosa-weißen Blüten im Frühsommer und leuchtend roten, vitamin-C-reichen Hagebutten im Herbst. Sie bietet Vögeln Nahrung und Schutz.",
-        "care": "• Standort: Sonnig bis halbschattig, ideal für naturnahe Hecken und Waldränder.\n• Pflege: Sehr robust, schnittverträglich und absolut pflegeleicht.",
+        "description": "Heimischer Wildstrauch mit rosa-weißen Blüten und roten Hagebutten im Herbst.",
+        "care": "• Standort: Sonnig bis halbschattig, ideal für Hecken.",
     },
 }
 
@@ -369,36 +432,36 @@ PLANT_INFO = {
 
 TOXICITY_INFO = {
     "monstera deliciosa": {
-        "details": "Die Monstera enthält im gesamten Pflanzengewebe nadelförmige Calciumoxalat-Kristalle. Bei Aufnahme oder Kauen durch Mensch oder Haustier kommt es sofort zu starkem brennenden Gefühl im Mund, Speichelfluss und Schleimhautreizungen.",
+        "details": "Die Monstera enthält im gesamten Pflanzengewebe Calciumoxalat-Kristalle. Bei Verzehr brennendes Gefühl und Schleimhautreizungen.",
         "audience": "Menschen und Haustiere (Katzen, Hunde)",
     },
     "sansevieria trifasciata": {
-        "details": "Der Bogenhanf enthält in den Blättern Saponine (Seifenstoffe). Der Verzehr von Blättern führt bei Haustieren zu heftigem Erbrechen, Durchfall, Magenkrämpfen und starkem Speichelfluss.",
+        "details": "Enthält in den Blättern Saponine. Führt bei Haustieren zu Erbrechen, Durchfall und starkem Speichelfluss.",
         "audience": "Insbesondere Haustiere (Hunde und Katzen)",
     },
     "aloe vera": {
-        "details": "In der Blatthaut befindet sich der Stoff Aloin, der stark abführend und reizend auf den Magen-Darm-Trakt wirkt. Bei innerlicher Aufnahme drohen Krämpfe und Durchfälle.",
+        "details": "Die Blatthaut enthält Aloin, das abführend und reizend auf den Magen-Darm-Trakt wirkt.",
         "audience": "Menschen und Haustiere",
     },
     "zamioculcas zamiifolia": {
-        "details": "Sämtliche Pflanzenteile der Glücksfeder enthalten Calciumoxalat-Kristalle und Reizstoffe. Bei Verzehr von Blättern oder Stielen treten Schwellungen im Rachenraum und starker Speichelfluss auf.",
+        "details": "Enthält Calciumoxalat-Kristalle. Bei Verzehr drohen Schwellungen im Rachenraum und Speichelfluss.",
         "audience": "Menschen und Haustiere",
     },
     "epipremnum aureum": {
-        "details": "Die Efeutute enthält giftige Calciumoxalat-Nadeln. Der Saft führt bei Hautkontakt zu Reizungen und bei Verschlucken zu schmerzhaften Schleimhautschwellungen im Mundbereich.",
+        "details": "Enthält Calciumoxalat-Nadeln. Führt bei Verschlucken zu Schleimhautschwellungen.",
         "audience": "Menschen und Haustiere",
     },
     "ficus elastica": {
-        "details": "Der weiße, klebrige Milchsaft des Gummibaums enthält Kautschuk und reizende Enzyme. Bei Hautkontakt oder Schleimhautreizungen (z. B. nach Anknabbern durch Haustiere) drohen Entzündungen.",
+        "details": "Der weiße Milchsaft enthält reizende Enzyme. Bei Hautkontakt oder Verzehr drohen Entzündungen.",
         "audience": "Menschen und Haustiere",
     },
     "spathiphyllum wallisii": {
-        "details": "Das Einblatt enthält wie viele Aronstabgewächse Calciumoxalat-Nadeln. Der Verzehr bewirkt heftiges Brennen im Mund, Schluckbeschwerden und Erbrechen bei Haustieren.",
+        "details": "Enthält Calciumoxalat. Bewirkt heftiges Brennen im Mund und Schluckbeschwerden.",
         "audience": "Menschen und Haustiere",
     },
     "urtica dioica": {
-        "details": "Die Brennhaare enthalten Histamin, Acetylcholin und Ameisensäure. Bei Hautkontakt brennt und juckt die betroffene Hautpartie stark und schwillt leicht an.",
-        "audience": "Menschen und Tiere (bei direkter Berührung)",
+        "details": "Brennhaare enthalten Histamin und Ameisensäure (führt zu schmerzhaftem Hautbrennen bei Berührung).",
+        "audience": "Menschen und Tiere (bei Berührung)",
     },
 }
 
@@ -481,8 +544,8 @@ def get_plant_information(label):
     clean_fallback = label.replace("_", " ").capitalize()
     return {
         "name": clean_fallback,
-        "description": f"Das KI-Modell hat diese Pflanze als '{clean_fallback}' klassifiziert. Es handelt sich hierbei um eine faszinierende Pflanzenart aus dem biologischen Klassifikationsmodell. In unserer erweiterten Datenbank sind zu dieser spezifischen Art im Moment noch keine detaillierten Textbeschreibungen hinterlegt, weshalb wir diesen allgemeinen Standardtext anzeigen.",
-        "care": "Grundsätzlich gilt für unbestimmte Pflanzen: Achten Sie auf einen ausgewogenen Standort mit ausreichend (aber nicht zu grellem) Licht, vermeiden Sie permanente Staunässe im Wurzelbereich und passen Sie die Wassergaben den individuellen Umgebungsbedingungen an.",
+        "description": f"Das KI-Modell hat diese Pflanze als '{clean_fallback}' klassifiziert. In unserer erweiterten Datenbank sind zu dieser Art aktuell keine spezifischen Detailtexte hinterlegt.",
+        "care": "Achten Sie auf einen ausgewogenen Standort mit ausreichend Licht, vermeiden Sie permanente Staunässe im Wurzelbereich und passen Sie die Wassergaben an.",
     }
 
 
@@ -492,7 +555,7 @@ def get_toxicity_information(label):
         return {"known": True, "details": result["details"], "audience": result["audience"]}
     return {
         "known": False, 
-        "details": "Für diese spezifische Pflanzenart liegen uns in der Giftstoffdatenbank keine Einträge vor. Das bedeutet jedoch ausdrücklich nicht, dass sie garantiert ungiftig ist. Bei unbekannten Wild- und Zimmerpflanzen sollte stets vorsichtiger Umgang gewahrt werden, besonders in Haushalten mit Kleinkindern und Haustieren.", 
+        "details": "Für diese Pflanzenart liegen keine bekannten Giftstoffe in unserer Datenbank vor. Vorsicht ist dennoch geboten.", 
         "audience": "Nicht überprüft / Unbekannt"
     }
 
@@ -520,14 +583,23 @@ def classify_image(image, processor, model):
 
 
 # ============================================================
-# HEADER BEREICH
+# HEADER BEREICH (EXAKT WIE AUF DEM BILD)
 # ============================================================
 
 st.markdown("""
-<div class="header-container">
-    <div class="main-title-box">
-        <span style="font-size: 42px;">🌿</span>
+<div class="top-header-row">
+    <div class="title-left">
+        <div class="logo-badge">🌿</div>
         <h1 class="main-title">PlantScan</h1>
+    </div>
+    <div class="top-right-icons">
+        <div class="icon-pill">
+            <span>☀️</span>
+            <div style="width: 24px; height: 12px; background: #c8dec4; border-radius: 10px; position: relative;">
+                <div style="width: 10px; height: 10px; background: white; border-radius: 50%; position: absolute; top: 1px; left: 1px;"></div>
+            </div>
+        </div>
+        <div class="profile-circle">👤</div>
     </div>
 </div>
 <div class="subtitle">Dein intelligenter Begleiter für gesunde Pflanzen.</div>
@@ -542,13 +614,13 @@ st.markdown("""
 
 
 # ============================================================
-# UPLOAD BEREICH
+# UPLOAD BEREICH (IM EXAKT GLEICHEN DESIGN-KARTEN-STIL)
 # ============================================================
 
 st.markdown("""
-<div class="card-container">
+<div class="card-container" style="margin-bottom: 15px;">
     <div class="card-header">
-        <span style="font-size: 26px;">📷</span>
+        <div class="card-icon-box">📷</div>
         <h3 class="card-title">Deine Pflanze entdecken</h3>
     </div>
     <div class="card-desc">Lade ein Foto deiner Pflanze hoch.</div>
@@ -565,13 +637,14 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 
 if uploaded_file is None:
+    # So funktioniert PlantScan Karte (wie im Bild)
     st.markdown("""
     <div class="card-container">
         <div class="card-header">
-            <span style="font-size: 26px;">🌱</span>
+            <div class="card-icon-box">🌱</div>
             <h3 class="card-title">So funktioniert PlantScan</h3>
         </div>
-        <div style="margin-top: 15px;">
+        <div style="margin-top: 15px; margin-left: 58px;">
             <div class="step-row">
                 <div class="step-badge">1</div>
                 <div>Lade ein Foto deiner Pflanze hoch.</div>
@@ -700,7 +773,7 @@ else:
                 st.write(toxicity["details"])
                 st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
 
-                st.info("Hinweis: Die automatisierte Pflanzenbestimmung mittels KI kann fehlerhaft sein. Dieser Check ersetzt keinesfalls eine professionelle botanische Giftigkeitsprüfung oder medizinische Beratung bei Vergiftungsverdacht.")
+                st.info("Hinweis: Die automatisierte Pflanzenbestimmung mittels KI kann fehlerhaft sein. Dieser Check ersetzt keinesfalls eine professionelle botanische Giftigkeitsprüfung.")
 
                 st.subheader("📊 Weitere KI-Ergebnisse")
                 for result in results:
@@ -708,7 +781,7 @@ else:
                     st.write(f"**{result['name']}** – {percentage:.2f} %")
                     st.progress(float(result["score"]))
 
-                st.caption("Die Prozentwerte spiegeln die relative Modell-Wahrscheinlichkeit innerhalb der trainierten Klassen wider.")
+                st.caption("Die Prozentwerte spiegeln die relative Modell-Wahrscheinlichkeit wider.")
 
     except Exception as error:
         st.error("Das Bild konnte nicht verarbeitet werden.")

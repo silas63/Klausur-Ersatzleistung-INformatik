@@ -246,105 +246,175 @@ def load_model():
 
 
 # ============================================================
-# PFLANZEN-DATENBANK & HILFSFUNKTIONEN
+# MASSIV ERWEITERTE PFLANZEN-DATENBANK
 # ============================================================
 
 PLANT_INFO = {
+    # --- Zimmerpflanzen & Klassiker ---
     "monstera deliciosa": {
-        "name": "Monstera",
+        "name": "Monstera (Fensterblatt)",
         "description": "Eine tropische Zimmerpflanze mit großen, charakteristisch eingeschnittenen Blättern.",
-        "care": "Helles, indirektes Licht. Mäßig gießen und Staunässe vermeiden.",
+        "care": "Helles, indirektes Licht. Mäßig gießen und Staunässe unbedingt vermeiden.",
     },
     "sansevieria trifasciata": {
-        "name": "Bogenhanf",
-        "description": "Eine robuste Zimmerpflanze mit langen, aufrecht wachsenden Blättern.",
-        "care": "Heller bis halbschattiger Standort. Nur sparsam gießen.",
+        "name": "Bogenhanf (Sansevieria)",
+        "description": "Eine extrem robuste Zimmerpflanze mit langen, aufrecht wachsenden, sukkulenten Blättern.",
+        "care": "Heller bis halbschattiger Standort. Nur sparsam gießen, verträgt Trockenheit hervorragend.",
     },
     "chlorophytum comosum": {
         "name": "Grünlilie",
-        "description": "Eine beliebte Zimmerpflanze mit langen, schmalen Blättern.",
+        "description": "Eine sehr beliebte, pflegeleichte Zimmerpflanze mit langen, schmalen, oft weiß-grün gestreiften Blättern.",
         "care": "Heller Standort ohne starke direkte Mittagssonne. Regelmäßig, aber mäßig gießen.",
     },
     "aloe vera": {
         "name": "Aloe vera",
-        "description": "Eine sukkulente Pflanze mit dicken, fleischigen Blättern.",
-        "care": "Viel Licht. Sparsam gießen und die Erde zwischen den Wassergaben trocknen lassen.",
+        "description": "Eine sukkulente Heilpflanze mit dicken, fleischigen Blättern, die heilenden Saft enthalten.",
+        "care": "Sehr viel Licht und Sonne. Sparsam gießen, die Erde vor dem nächsten Gießen komplett austrocknen lassen.",
     },
     "zamioculcas zamiifolia": {
         "name": "Glücksfeder",
-        "description": "Eine robuste Zimmerpflanze mit glänzenden, kräftigen Blättern.",
-        "care": "Heller bis halbschattiger Standort. Wenig Wasser und keine Staunässe.",
+        "description": "Eine unkomplizierte Zimmerpflanze mit glänzenden, kräftigen Blättern und dickem Rhizom.",
+        "care": "Kommt auch mit schattigen Ecken klar. Wenig Wasser und keinesfalls Staunässe.",
     },
     "epipremnum aureum": {
         "name": "Efeutute",
-        "description": "Eine Kletterpflanze mit herzförmigen Blättern.",
-        "care": "Heller Standort ohne starke direkte Sonne. Mäßig gießen.",
+        "description": "Eine wüchsige Kletter- und Ampel-Pflanze mit herzförmigen, oft panaschierten Blättern.",
+        "care": "Heller bis halbschattiger Standort ohne direkte Sonne. Mäßig feucht halten.",
     },
     "ficus elastica": {
         "name": "Gummibaum",
-        "description": "Eine Zimmerpflanze mit großen, dicken und glänzenden Blättern.",
-        "care": "Heller Standort und mäßige Wassergaben.",
+        "description": "Klassische Zimmerpflanze mit großen, lederartigen, glänzenden Blättern.",
+        "care": "Heller Standort, mäßige Wassergaben mit kalkarmem Wasser bei Zimmertemperatur.",
     },
     "ficus lyrata": {
         "name": "Geigenfeige",
-        "description": "Eine Zimmerpflanze mit großen, geigenförmigen Blättern.",
-        "care": "Heller Standort ohne starke direkte Mittagssonne.",
+        "description": "Imposante Zimmerpflanze mit großen, geigenförmigen und geäderten Blättern.",
+        "care": "Sehr hell, keine direkte Sonne, zugluftgeschützt. Gleichmäßig leicht feucht halten.",
     },
     "spathiphyllum wallisii": {
         "name": "Einblatt",
-        "description": "Eine Zimmerpflanze mit dunkelgrünen Blättern und weißen Blüten.",
-        "care": "Heller bis halbschattiger Standort. Erde leicht feucht halten.",
+        "description": "Zimmerpflanze mit dunkelgrünem Laub und charakteristischen weißen Blütenkolben.",
+        "care": "Halbschattig bis hell, hohe Luftfeuchtigkeit wird geliebt. Die Erde immer leicht feucht halten.",
     },
     "dracaena marginata": {
         "name": "Drachenbaum",
-        "description": "Eine Zimmerpflanze mit schmalen, langen Blättern.",
-        "care": "Heller Standort und mäßig gießen.",
+        "description": "Palmenähnliche Zimmerpflanze mit schlankem Stamm und schmalen, rotgeränderten Blättern.",
+        "care": "Heller bis halbschattiger Standort. Mäßig gießen, Staunässe führt zu Wurzelfäule.",
     },
     "crassula ovata": {
-        "name": "Geldbaum",
-        "description": "Eine Sukkulente mit dicken, ovalen Blättern.",
-        "care": "Viel Licht und sparsam gießen.",
+        "name": "Geldbaum (Kirchbäumchen)",
+        "description": "Beliebte Sukkulente mit dicken, ovalen Blättern und baumartigem Wuchs.",
+        "care": "Viel Sonne, durchlässige Erde. Sparsam gießen.",
     },
     "yucca elephantipes": {
-        "name": "Yucca-Palme",
-        "description": "Eine Zimmerpflanze mit holzigem Stamm und langen, spitzen Blättern.",
-        "care": "Heller Standort und mäßige Wassergaben.",
+        "name": "Yucca-Palme (Palmlilie)",
+        "description": "Holziger Stamm mit schopfartig angeordneten, langen und spitzen Blättern.",
+        "care": "Heller, sonniger Standort. Mäßig gießen, im Winter noch weniger.",
+    },
+
+    # --- Einheimische Bäume & Sträucher in Deutschland ---
+    "quercus robur": {
+        "name": "Stiel-Eiche",
+        "description": "Einer der majestätischsten heimischen Laubbäume mit gelappten Blättern und Eicheln.",
+        "care": "Freistehend im Garten, sonniger Standort, tiefgründiger Boden.",
+    },
+    "fagus sylvatica": {
+        "name": "Rot-Buche",
+        "description": "Der häufigste heimische Laubbaum in deutschen Wäldern mit glatter Rinde und welligen Blättern.",
+        "care": "Wächst als Wald- und Parkbaum, bevorzugt nährstoffreiche, frische Böden.",
+    },
+    "betula pendula": {
+        "name": "Sand-Birke",
+        "description": "Leicht erkennbarer Baum mit auffälliger weißer Rinde und zarten, hängenden Zweigen.",
+        "care": "Sehr anspruchslos, liebt sonnige Standorte.",
+    },
+    "acer pseudoplatanus": {
+        "name": "Berg-Ahorn",
+        "description": "Großer, heimischer Laubbaum mit typisch fünfzipfeligen Ahornblättern und geflügelten Nüssen.",
+        "care": "Robuster Baum für große Gärten und Parks.",
+    },
+    "pinus sylvestris": {
+        "name": "Wald-Kiefer (Föhre)",
+        "description": "Nadelbaum mit rötlicher Rinde im oberen Stammbereich und blaugrünen Nadeln.",
+        "care": "Sonniger Standort, gedeiht auch auf sandigen, mageren Böden.",
+    },
+    "picea abies": {
+        "name": "Gemeine Fichte (Rotfichte)",
+        "description": "Häufigster Nadelbaum in deutschen Wirtschaftswäldern, oft als Weihnachtsbaum genutzt.",
+        "care": "Bevorzugt kältere, feuchtere Lagen und saure Böden.",
+    },
+
+    # --- Heimische Wiesen- & Gartenblumen ---
+    "taraxacum officinale": {
+        "name": "Wiesen-Löwenzahn",
+        "description": "Bekannte Wildpflanze mit leuchtend gelben Blütenkörbchen und gezahnten Blättern.",
+        "care": "Wächst auf Wiesen und in Gärten als Wildkraut.",
+    },
+    "bellis perennis": {
+        "name": "Gänseblümchen (Tausendschön)",
+        "description": "Kleine, zarte Wiesenblume mit weiß-rosa Blütenblättern und gelber Mitte.",
+        "care": "Wächst auf Rasenflächen, mag sonnige bis halbschattige Standorte.",
+    },
+    "urtica dioica": {
+        "name": "Große Brennnessel",
+        "description": "Heimische Wildpflanze mit Brennhaaren, aber extrem wertvoll für die Tierwelt (Schmetterlingsraupen).",
+        "care": "Wächst wild an stickstoffreichen Standorten.",
+    },
+    "rosa canina": {
+        "name": "Hunds-Rose (Heckenrose)",
+        "description": "Wildstrauch mit rosa-weißen Blüten und im Herbst roten Hagebutten.",
+        "care": "Sonnig, pflegeleicht, ideal für Hecken im Naturgarten.",
     },
 }
+
+
+# ============================================================
+# GIFTIGKEITS-DATENBANK
+# ============================================================
 
 TOXICITY_INFO = {
     "monstera deliciosa": {
-        "details": "Die Monstera enthält Calciumoxalat-Kristalle. Pflanzenteile können bei Aufnahme Reizungen verursachen.",
-        "audience": "Menschen und Haustiere",
+        "details": "Die Monstera enthält Calciumoxalat-Kristalle in Pflanzensaft und Blättern. Bei Verzehr brennendes Gefühl, Reizungen der Schleimhäute.",
+        "audience": "Menschen und Haustiere (Katzen, Hunde)",
     },
     "sansevieria trifasciata": {
-        "details": "Der Bogenhanf enthält Saponine und kann bei Aufnahme Beschwerden verursachen.",
+        "details": "Enthält Saponine. Kann bei Haustieren zu Speichelfluss, Erbrechen und Durchfall führen.",
         "audience": "Insbesondere Haustiere",
     },
     "aloe vera": {
-        "details": "Bestandteile der Aloe vera können bei Aufnahme Beschwerden verursachen.",
-        "audience": "Insbesondere Haustiere",
+        "details": "Die Randschicht des Blattes enthält Aloin, welches abführend und reizend wirkt.",
+        "audience": "Menschen und Haustiere",
     },
     "zamioculcas zamiifolia": {
-        "details": "Die Glücksfeder enthält Calciumoxalat-Kristalle, die Schleimhäute reizen können.",
+        "details": "Enthält Calciumoxalat. Berührung oder Verzehr kann Schleimhautreizungen auslösen.",
         "audience": "Menschen und Haustiere",
     },
     "epipremnum aureum": {
-        "details": "Die Efeutute enthält Calciumoxalat-Kristalle, die bei Aufnahme Reizungen verursachen können.",
+        "details": "Enthält Calciumoxalat-Kristalle. Reizt den Mund- und Rachenraum bei Aufnahme.",
         "audience": "Menschen und Haustiere",
     },
     "ficus elastica": {
-        "details": "Der Gummibaum enthält einen reizenden Milchsaft.",
+        "details": "Der weiße Milchsaft ist haut- und schleimhautreizend.",
         "audience": "Menschen und Haustiere",
     },
     "spathiphyllum wallisii": {
-        "details": "Das Einblatt enthält Calciumoxalat-Kristalle, die bei Kontakt oder Aufnahme reizen können.",
+        "details": "Enthält Calciumoxalat, das bei Haustieren zu starkem Speichelfluss und Magenreizung führt.",
         "audience": "Menschen und Haustiere",
+    },
+    "urtica dioica": {
+        "details": "Brennhaare enthalten Histamin und Ameisensäure (führt zu schmerzhaftem Hautbrennen bei Berührung).",
+        "audience": "Menschen und Tiere (bei Berührung)",
     },
 }
 
+
+# ============================================================
+# SYNONYME & DEUTSCHE NAMEN ZUORDNUNG
+# ============================================================
+
 PLANT_ALIASES = {
-    "dracaena trifasciata": "sansevieria trifasciata",
+    "monstera": "monstera deliciosa",
+    "fensterblatt": "monstera deliciosa",
     "sansevieria": "sansevieria trifasciata",
     "bogenhanf": "sansevieria trifasciata",
     "gruenlilie": "chlorophytum comosum",
@@ -359,7 +429,27 @@ PLANT_ALIASES = {
     "geldbaum": "crassula ovata",
     "yucca palme": "yucca elephantipes",
     "yucca": "yucca elephantipes",
+    "eiche": "quercus robur",
+    "stieleiche": "quercus robur",
+    "buche": "fagus sylvatica",
+    "rotbuche": "fagus sylvatica",
+    "birke": "betula pendula",
+    "ahorn": "acer pseudoplatanus",
+    "kiefer": "pinus sylvestris",
+    "fichte": "picea abies",
+    "loewenzahn": "taraxacum officinale",
+    "löwenzahn": "taraxacum officinale",
+    "gaensebluemchen": "bellis perennis",
+    "gänseblümchen": "bellis perennis",
+    "brennnessel": "urtica dioica",
+    "rose": "rosa canina",
+    "hagebutte": "rosa canina",
 }
+
+
+# ============================================================
+# HILFSFUNKTIONEN
+# ============================================================
 
 def normalize_name(name):
     name = str(name).lower().strip()
@@ -368,19 +458,25 @@ def normalize_name(name):
     name = re.sub(r"\s+", " ", name)
     return name.strip()
 
+
 def find_database_entry(label, database):
     normalized = normalize_name(label)
+
     if normalized in database:
         return database[normalized]
+
     for alias in sorted(PLANT_ALIASES, key=len, reverse=True):
         if normalized == alias or normalized.startswith(alias + " "):
             canonical_name = PLANT_ALIASES[alias]
             if canonical_name in database:
                 return database[canonical_name]
+
     for key in sorted(database, key=len, reverse=True):
         if normalized == key or normalized.startswith(key + " "):
             return database[key]
+
     return None
+
 
 def get_plant_information(label):
     result = find_database_entry(label, PLANT_INFO)
@@ -388,9 +484,10 @@ def get_plant_information(label):
         return result
     return {
         "name": label,
-        "description": "Das Modell hat diese Pflanzenart erkannt. In unserer Informationsdatenbank liegen dazu noch keine genauen Zusatzinfos vor.",
+        "description": "Das Modell hat diese Pflanzenart erkannt. In unserer erweiterten Informationsdatenbank liegen dazu noch keine Detailinfos vor.",
         "care": "Bitte informiere dich anhand des wissenschaftlichen Pflanzennamens über die individuellen Pflegeansprüche.",
     }
+
 
 def get_toxicity_information(label):
     result = find_database_entry(label, TOXICITY_INFO)
@@ -398,9 +495,10 @@ def get_toxicity_information(label):
         return {"known": True, "details": result["details"], "audience": result["audience"]}
     return {
         "known": False, 
-        "details": "Diese Pflanzenart ist nicht in unserer kleinen Giftigkeitsdatenbank enthalten. Daraus lässt sich nicht schließen, dass sie ungiftig ist.", 
+        "details": "Diese Pflanzenart ist nicht als giftig in unserer Datenbank eingetragen. Das ist keine Garantie für Ungiftigkeit.", 
         "audience": "Nicht sicher überprüft"
     }
+
 
 def classify_image(image, processor, model):
     inputs = processor(images=image, return_tensors="pt")

@@ -39,7 +39,7 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Clean & Perfekter weicher Natur-Look)
+# DESIGN & CSS
 # ============================================================
 
 st.markdown("""
@@ -262,7 +262,7 @@ def load_model():
 
 
 # ============================================================
-# DETAILLIERTE DATENBANK FÜR ALLE BEKANNTEN ARTEN
+# SPEZIFISCHE PFLANZEN-DATENBANK (EXKLUSIVE TEXTE)
 # ============================================================
 
 PLANT_INFO = {
@@ -376,6 +376,11 @@ PLANT_INFO = {
         "description": "Wildstrauch mit rosa-weißen Blüten und roten Hagebutten im Herbst.",
         "care": "• Standort: Sonnig bis halbschattig.",
     },
+    "arundina graminifolia": {
+        "name": "Bambus-Orchidee (Arundina graminifolia)",
+        "description": "Die Arundina graminifolia, im deutschen Sprachraum als Bambus-Orchidee bekannt, ist eine faszinierende terrestrische Orchideenart aus Asien (unter anderem in Indien, Südchina und Südostasien beheimatet). Sie verdankt ihren Namen den schlanken, rohrartigen, bambusähnlichen Stängeln und den schmalen, grasartigen Blättern. Sie bildet wunderschöne, cattleyen-ähnliche weiße oder zartrosa Blüten mit einer purpurroten Lippe aus, die fast das ganze Jahr über blühen können.",
+        "care": "• Standort: Sehr hell bis sonnig, verträgt auch direkte Morgensonne, sollte aber im Hochsommer vor sengender Hitze geschützt werden.\n• Gießen: Regelmäßig und gleichmäßig feucht halten; das Substrat darf niemals komplett austrocknen, allerdings ist auch hier absolute Staunässe zu vermeiden.\n• Temperatur & Luft: Bevorzigt warme, tropische bis subtropische Temperaturen (20–30 °C) und eine hohe Luftfeuchtigkeit.",
+    }
 }
 
 
@@ -416,6 +421,10 @@ TOXICITY_INFO = {
         "details": "Brennhaare enthalten Histamin und Ameisensäure (schmerzhafter Hautreiz bei Berührung).",
         "audience": "Menschen und Tiere",
     },
+    "arundina graminifolia": {
+        "details": "Für die Bambus-Orchidee (Arundina graminifolia) sind in der klassischen Veterinär- und Humanliteratur keine giftigen Inhaltsstoffe bekannt. Sie gilt im Allgemeinen als ungiftig für Haustiere wie Hunde und Katzen.",
+        "audience": "Keine Giftstoffe bekannt",
+    },
 }
 
 
@@ -455,11 +464,13 @@ PLANT_ALIASES = {
     "brennnessel": "urtica dioica",
     "rose": "rosa canina",
     "hagebutte": "rosa canina",
+    "arundina graminifolia": "arundina graminifolia",
+    "bambus orchidee": "arundina graminifolia",
 }
 
 
 # ============================================================
-# HILFSFUNKTIONEN MIT INTELLIGenter INDIVIDUELLER GENERIERUNG
+# HILFSFUNKTIONEN MIT SICHERER ZUORDNUNG
 # ============================================================
 
 def normalize_name(name):
@@ -494,27 +505,11 @@ def get_plant_information(label):
     if result:
         return result
     
-    # 100% INDIVIDUELLE GENERIERUNG FÜR JEDE UNBEKANNTE KLASSE
     clean_name = label.replace("_", " ").capitalize()
-    lower_name = clean_name.lower()
-    
-    if "tree" in lower_name or "baum" in lower_name or "eiche" in lower_name or "pine" in lower_name:
-        desc = f"Der Baum '{clean_name}' zeichnet sich durch einen holzigen, ausdauernden Stamm und eine artspezifische Kronenstruktur aus. Er prägt sein natürliches Habitat durch Schattenwurf und Biomasseproduktion."
-        care = "• Standort: Vollsonnig bis halbschattig im Freien.\n• Boden: Nährstoffreicher, gut durchlässiger Gartenboden.\n• Pflege: In den ersten Jahren nach dem Einpflanzen regelmäßig wässern."
-    elif "flower" in lower_name or "blume" in lower_name or "blüte" in lower_name:
-        desc = f"Die Pflanzenart '{clean_name}' bildet dekorative Blütenorgane aus, die vor allem Insekten anlocken. Sie eignet sich hervorragend zur optischen Aufwertung von Beeten oder Gefäßen."
-        care = "• Standort: Hell bis sonnig.\n• Gießen: Regelmäßig feucht halten, Staunässe vermeiden.\n• Düngung: Während der Blütezeit wöchentlich schwach düngen."
-    elif "succulent" in lower_name or "cactus" in lower_name or "kaktus" in lower_name:
-        desc = f"'{clean_name}' ist eine an Trockenheit angepasste Sukkulente, die Wasser in ihren Geweben speichert und in kargen Regionen überleben kann."
-        care = "• Standort: Sehr hell und sonnig.\n• Gießen: Nur spärlich gießen, Substrat komplett austrocknen lassen."
-    else:
-        desc = f"Die botanische Klassifikation '{clean_name}' repräsentiert eine spezialisierte Pflanzenart mit eigenen Wuchsformen, Blattstrukturen und ökologischen Anpassungen."
-        care = "• Standort: Ausgewogener, heller Standort ohne pralle Mittagssonne.\n• Gießen: Mäßig feucht halten, Staunässe im Topf vermeiden."
-
     return {
         "name": clean_name,
-        "description": desc,
-        "care": care,
+        "description": f"Die Pflanze '{clean_name}' wurde durch das neuronale Netz identifiziert. Sie gehört zu den spezialisierten Taxa dieses Modells und besitzt artspezifische Anpassungen an ihr natürliches Ökosystem bezüglich Wuchs und Blattwerk.",
+        "care": "• Standort: Ein heller, ausgewogener Platz ohne direkte, aggressive Mittagssonne.\n• Gießen: Regelmäßig kontrollieren und mäßig gießen; Staunässe im Topf unbedingt vermeiden.\n• Pflege: Welke Blätter gelegentlich entfernen und bei Bedarf während der Wachstumsphase schonend düngen.",
     }
 
 
@@ -524,7 +519,7 @@ def get_toxicity_information(label):
         return {"known": True, "details": result["details"], "audience": result["audience"]}
     return {
         "known": False, 
-        "details": "Für diese spezifische Pflanzenart sind in unserer Datenbank keine akuten Giftstoffe oder gesundheitlichen Risiken hinterlegt. Dennoch sollte bei unbekannten Pflanzen stets Vorsicht gelten.", 
+        "details": "Für diese spezifische Pflanzenart sind keine dokumentierten Giftstoffe in unserer primären Datenbank hinterlegt. Generell ist beim Verzehr unbekannter Pflanzen stets Vorsicht geboten.", 
         "audience": "Nicht überprüft / Unbekannt"
     }
 
@@ -617,7 +612,7 @@ if uploaded_file is None:
             </div>
             <div class="step-row">
                 <div class="step-badge">3</div>
-                <div>Entdecke individuelle Informationen.</div>
+                <div>Entdecke spezifische Informationen.</div>
             </div>
         </div>
     </div>
@@ -666,7 +661,7 @@ else:
             st.divider()
 
             # ----------------------------------------
-            # AUSWAHL-BUTTONS (Der Nutzer muss VORHER wählen)
+            # AUSWAHL-BUTTONS (Der Nutzer wählt VORHER)
             # ----------------------------------------
             st.markdown("### 📌 Was möchtest du erfahren?")
             st.markdown("Bitte wähle eine Option aus, um die entsprechenden Informationen anzuzeigen:")
@@ -682,10 +677,10 @@ else:
             st.markdown("<br>", unsafe_allow_html=True)
 
             # ----------------------------------------
-            # ANSICHT: PFLEGE (Wird nur angezeigt, wenn ausgewählt)
+            # ANSICHT: PFLEGE
             # ----------------------------------------
             if st.session_state.view == "care":
-                st.markdown('<div class="section-heading">🌱 Pflanzenpflege & Individuelle Informationen</div>', unsafe_allow_html=True)
+                st.markdown('<div class="section-heading">🌱 Pflanzenpflege & Spezifische Informationen</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="card-container">
                     <p class="muted">Erkannte Pflanzenart</p>
@@ -698,7 +693,7 @@ else:
                 """, unsafe_allow_html=True)
 
             # ----------------------------------------
-            # ANSICHT: GIFTCHECK (Wird nur angezeigt, wenn ausgewählt)
+            # ANSICHT: GIFTCHECK
             # ----------------------------------------
             elif st.session_state.view == "toxicity":
                 st.markdown('<div class="section-heading">⚠️ Giftigkeitscheck & Risiken</div>', unsafe_allow_html=True)
@@ -710,14 +705,14 @@ else:
                 """, unsafe_allow_html=True)
 
                 if toxicity["known"]:
-                    st.error("Für diese Pflanzenart sind gesundheitliche Risiken bekannt:")
+                    st.error("Gesundheitliche Hinweise:")
                     st.write(toxicity["details"])
                 else:
-                    st.warning("Für diese Pflanzenart sind aktuell keine spezifischen Giftstoffe in unserer Datenbank hinterlegt.")
+                    st.warning("Keine spezifischen Giftstoffe hinterlegt.")
                     st.write(toxicity["details"])
                 
                 st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
-                st.info("Hinweis: Die automatisierte Pflanzenbestimmung mittels KI kann fehlerhaft sein. Dieser Check ersetzt keinesfalls eine professionelle botanische Giftigkeitsprüfung.")
+                st.info("Hinweis: Die KI-Bestimmung kann fehlerhaft sein und ersetzt keine professionelle botanische Giftprüfung.")
 
     except Exception as error:
         st.error("Das Bild konnte nicht verarbeitet werden.")

@@ -39,17 +39,17 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Scharfe, sichtbare Blätter an den Rändern, weicher Übergang zur Mitte)
+# DESIGN & CSS (Präzise 2 einzelne Blätter am Rand, butterweicher Übergang zur Mitte)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Hintergrund mit echten, gut sichtbaren Blättern an den Rändern und sanftem Übergang zur Mitte */
+    /* Exakter weicher Übergang: Nur zwei dezente Blätter an den Außenrändern, zur Mitte hin clean und blass */
     .stApp {
         background: 
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=700&auto=format&fit=crop') left center / 24% 100% no-repeat fixed,
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=700&auto=format&fit=crop') right center / 24% 100% no-repeat fixed,
-            radial-gradient(circle at center, rgba(235, 245, 230, 0.95) 35%, rgba(205, 230, 200, 0.82) 75%, rgba(170, 210, 160, 0.65) 100%);
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=500&auto=format&fit=crop') left 35% / 18% auto no-repeat fixed,
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=500&auto=format&fit=crop') right 35% / 18% auto no-repeat fixed,
+            radial-gradient(circle at center, rgba(238, 247, 234, 0.98) 30%, rgba(210, 232, 205, 0.85) 75%, rgba(180, 215, 175, 0.6) 100%);
     }
 
     header[data-testid="stHeader"] {
@@ -93,7 +93,7 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Hero Banner mit absolut dichtem Dschungel-Hintergrund */
+    /* Hero Banner mit dichtem Dschungel */
     .hero {
         background: 
             linear-gradient(90deg, rgba(15, 48, 22, 0.95) 0%, rgba(20, 58, 28, 0.82) 55%, rgba(20, 58, 28, 0.3) 100%),

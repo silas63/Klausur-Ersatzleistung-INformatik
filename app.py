@@ -39,12 +39,12 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Clean & Perfekter weicher Natur-Look ohne Kanten)
+# DESIGN & CSS (Exakt wie auf deinem Entwurfs-Bild)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Exakter, sauberer Natur-Hintergrund mit sanftem Farbverlauf */
+    /* Exakter weicher Natur-Hintergrund wie auf deinem Entwurf */
     .stApp {
         background: linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
     }
@@ -54,76 +54,90 @@ st.markdown("""
     }
 
     .block-container {
-        max-width: 900px;
-        padding-top: 2.5rem;
+        max-width: 950px;
+        padding-top: 2rem;
         padding-bottom: 4rem;
     }
 
-    /* Top-Header mit Logo und Titel */
+    /* Top-Bar mit Logo und Titel (exakt wie auf dem Bild) */
     .top-header-row {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 16px;
+        width: 100%;
         margin-bottom: 4px;
     }
 
-    .logo-svg {
+    .title-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .logo-badge {
+        background: #287344;
         width: 54px;
         height: 54px;
-        flex-shrink: 0;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        box-shadow: 0 6px 16px rgba(40,115,68,0.25);
     }
 
     .main-title {
         color: #174b2e;
-        font-size: 44px;
+        font-size: 46px;
         font-weight: 800;
         letter-spacing: -1.5px;
         margin: 0;
-        line-height: 1.1;
+        line-height: 1;
     }
 
     .subtitle {
         color: #5c7960;
-        font-size: 17px;
-        margin-bottom: 25px;
+        font-size: 16px;
+        margin-bottom: 22px;
+        margin-top: 2px;
     }
 
-    /* Hero Banner im originalen Dschungel-Look */
+    /* Hero Banner im exakten Entwurfs-Look */
     .hero {
         background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
-                    URL('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
+                    url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         padding: 36px 40px;
         border-radius: 24px;
         color: white;
-        margin: 15px 0 25px 0;
+        margin: 10px 0 24px 0;
         box-shadow: 0 10px 30px rgba(23,75,46,0.15);
     }
 
     .hero h2 {
         color: white !important;
-        font-size: 28px;
+        font-size: 26px;
         margin-top: 0;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         font-weight: 700;
     }
 
     .hero p {
         color: #e4f2e6;
         font-size: 15px;
-        line-height: 1.6;
+        line-height: 1.5;
         margin: 0;
-        max-width: 700px;
+        max-width: 680px;
     }
 
-    /* Clean Milchglas-Karten */
+    /* Karten-Container im Bild-Stil */
     .card-container {
         background: #fbfdf9;
         border: 1px solid #dcebd8;
         border-radius: 24px;
-        padding: 30px;
-        margin-bottom: 25px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
         box-shadow: 0 8px 24px rgba(30, 80, 40, 0.05);
     }
 
@@ -131,19 +145,18 @@ st.markdown("""
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .card-icon-box {
-        background: #e4ede0;
+        background: #e6f2e0;
         width: 44px;
         height: 44px;
-        border-radius: 50%;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
-        color: #174b2e;
+        font-size: 22px;
     }
 
     .card-title {
@@ -156,10 +169,11 @@ st.markdown("""
     .card-desc {
         color: #617566;
         font-size: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
+        margin-left: 58px;
     }
 
-    /* Nummerierte Schritte */
+    /* Nummerierte Schritte für "So funktioniert PlantScan" */
     .step-row {
         display: flex;
         align-items: center;
@@ -184,15 +198,17 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader */
+    /* Streamlit File Uploader optisch anpassen (Gestrichelte Box wie im Bild) */
     div[data-testid="stFileUploader"] {
-        background: #f4f8f1;
+        background: #f5f9f2;
         border: 2px dashed #b8d4b0;
-        border-radius: 18px;
+        border-radius: 16px;
         padding: 10px;
+        margin-left: 58px;
+        width: calc(100% - 58px);
     }
     div[data-testid="stFileUploader"] section {
-        padding: 15px;
+        padding: 12px;
     }
 
     .section-heading {
@@ -524,7 +540,6 @@ def classify_image(image, processor, model):
         raw_label = model.config.id2label[index.item()]
         
         db_entry = find_database_entry(raw_label, PLANT_INFO)
-        # Immer den sauberen deutschen Namen aus der Datenbank erzwingen falls vorhanden
         display_name = db_entry["name"] if db_entry else raw_label.replace("_", " ").capitalize()
         
         results.append({
@@ -536,13 +551,15 @@ def classify_image(image, processor, model):
 
 
 # ============================================================
-# HEADER BEREICH
+# HEADER BEREICH (EXAKT WIE AUF DEM BILD, OHNE ICON-SCHALTFLÄCHEN)
 # ============================================================
 
 st.markdown("""
 <div class="top-header-row">
-    <span style="font-size: 42px;">🌿</span>
-    <h1 class="main-title">PlantScan</h1>
+    <div class="title-left">
+        <div class="logo-badge">🌿</div>
+        <h1 class="main-title">PlantScan</h1>
+    </div>
 </div>
 <div class="subtitle">Dein intelligenter Begleiter für gesunde Pflanzen.</div>
 """, unsafe_allow_html=True)
@@ -560,9 +577,9 @@ st.markdown("""
 # ============================================================
 
 st.markdown("""
-<div class="card-container">
+<div class="card-container" style="margin-bottom: 15px;">
     <div class="card-header">
-        <span style="font-size: 26px;">📷</span>
+        <div class="card-icon-box">📷</div>
         <h3 class="card-title">Deine Pflanze entdecken</h3>
     </div>
     <div class="card-desc">Lade ein Foto deiner Pflanze hoch.</div>
@@ -582,10 +599,10 @@ if uploaded_file is None:
     st.markdown("""
     <div class="card-container">
         <div class="card-header">
-            <span style="font-size: 26px;">🌱</span>
+            <div class="card-icon-box">🌱</div>
             <h3 class="card-title">So funktioniert PlantScan</h3>
         </div>
-        <div style="margin-top: 15px;">
+        <div style="margin-top: 15px; margin-left: 58px;">
             <div class="step-row">
                 <div class="step-badge">1</div>
                 <div>Lade ein Foto deiner Pflanze hoch.</div>
@@ -645,7 +662,7 @@ else:
             st.divider()
 
             # ----------------------------------------
-            # AUSWAHL-BUTTONS (Zuerst muss ausgewählt werden)
+            # AUSWAHL-BUTTONS (Der Nutzer muss aktiv wählen)
             # ----------------------------------------
             col_b1, col_b2 = st.columns(2)
             with col_b1:
@@ -658,7 +675,7 @@ else:
             st.markdown("<br>", unsafe_allow_html=True)
 
             # ----------------------------------------
-            # ANSICHT: PFLEGE (Nur wenn ausgewählt)
+            # ANSICHT: PFLEGE
             # ----------------------------------------
             if st.session_state.view == "care":
                 st.markdown('<div class="section-heading">🌱 Pflanzenpflege & Informationen</div>', unsafe_allow_html=True)
@@ -681,7 +698,7 @@ else:
                 st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
 
             # ----------------------------------------
-            # ANSICHT: ERKENNUNG & GIFTCHECK (Nur wenn ausgewählt)
+            # ANSICHT: ERKENNUNG & GIFTCHECK
             # ----------------------------------------
             elif st.session_state.view == "recognition":
                 st.markdown('<div class="section-heading">🔍 KI-Pflanzenerkennung & Giftigkeitscheck</div>', unsafe_allow_html=True)

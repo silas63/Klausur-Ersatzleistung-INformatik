@@ -39,16 +39,17 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Perfekter weicher Übergang, dichter Dschungel, keine Kanten)
+# DESIGN & CSS (Scharfe, sichtbare Blätter an den Rändern, weicher Übergang zur Mitte)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Hintergrund mit perfektem, weichem Übergang von außen (dicht) nach innen (clean) */
+    /* Hintergrund mit echten, gut sichtbaren Blättern an den Rändern und sanftem Übergang zur Mitte */
     .stApp {
         background: 
-            radial-gradient(circle at center, rgba(235, 245, 230, 0.95) 30%, rgba(200, 225, 195, 0.8) 70%, rgba(160, 200, 150, 0.6) 100%),
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1600&auto=format&fit=crop') center center / cover no-repeat fixed;
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=700&auto=format&fit=crop') left center / 24% 100% no-repeat fixed,
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=700&auto=format&fit=crop') right center / 24% 100% no-repeat fixed,
+            radial-gradient(circle at center, rgba(235, 245, 230, 0.95) 35%, rgba(205, 230, 200, 0.82) 75%, rgba(170, 210, 160, 0.65) 100%);
     }
 
     header[data-testid="stHeader"] {

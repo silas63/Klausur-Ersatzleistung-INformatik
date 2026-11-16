@@ -39,16 +39,17 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Exakt wie auf dem Entwurfs-Foto: Blätter + Clean Look)
+# DESIGN & CSS (Mit echten Blättern an den Rändern & Dschungel-Banner)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Weicher Blätter-Hintergrund exakt wie auf deinem Entwurf */
+    /* Hintergrund mit sichtbaren Blättern an den Rändern wie auf dem Foto */
     .stApp {
         background: 
-            linear-gradient(rgba(235, 243, 228, 0.86), rgba(225, 236, 216, 0.88)),
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1600&auto=format&fit=crop') center center / cover no-repeat fixed;
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop') left center / 22% 100% no-repeat fixed,
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop') right center / 22% 100% no-repeat fixed,
+            linear-gradient(135deg, #f0f7ec 0%, #dcecd5 100%);
     }
 
     header[data-testid="stHeader"] {
@@ -56,12 +57,12 @@ st.markdown("""
     }
 
     .block-container {
-        max-width: 920px;
+        max-width: 900px;
         padding-top: 2.5rem;
         padding-bottom: 4rem;
     }
 
-    /* Top-Header mit Logo und Titel (clean ohne unnötige Icons) */
+    /* Top-Header mit Logo und Titel */
     .top-header-row {
         display: flex;
         align-items: center;
@@ -92,13 +93,13 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Hero Banner mit Blättern & Wassertropfen rechts wie im Entwurf */
+    /* Hero Banner mit dichtem Dschungel-Hintergrund */
     .hero {
         background: 
-            linear-gradient(90deg, rgba(22, 62, 34, 0.96) 0%, rgba(26, 72, 40, 0.88) 48%, rgba(26, 72, 40, 0.25) 100%),
-            url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
+            linear-gradient(90deg, rgba(22, 62, 34, 0.94) 0%, rgba(26, 72, 40, 0.85) 55%, rgba(26, 72, 40, 0.3) 100%),
+            url('https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop');
         background-size: cover;
-        background-position: right center;
+        background-position: center;
         padding: 38px 42px;
         border-radius: 22px;
         color: white;
@@ -122,9 +123,9 @@ st.markdown("""
         max-width: 480px;
     }
 
-    /* Clean Milchglas-Karten wie auf dem Foto */
+    /* Clean Milchglas-Karten */
     .card-container {
-        background: rgba(250, 252, 247, 0.92);
+        background: rgba(250, 252, 247, 0.94);
         backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.8);
         border-radius: 22px;
@@ -191,7 +192,7 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader gestrichelte Box wie im Entwurf */
+    /* Streamlit File Uploader gestrichelte Box */
     div[data-testid="stFileUploader"] {
         background: rgba(243, 247, 239, 0.8);
         border: 1.5px dashed #9eb59a;
@@ -238,7 +239,7 @@ st.markdown("""
     }
 
     div[data-testid="stMetric"] {
-        background: rgba(250, 252, 247, 0.92);
+        background: rgba(250, 252, 247, 0.94);
         border: 1px solid #dcebd8;
         border-radius: 14px;
         padding: 14px;
@@ -542,7 +543,7 @@ def classify_image(image, processor, model):
 
 
 # ============================================================
-# HEADER BEREICH (EXAKT WIE AUF DEM BILD, OHNE UNNÖTIGE ICONS)
+# HEADER BEREICH
 # ============================================================
 
 st.markdown("""
@@ -568,7 +569,7 @@ st.markdown("""
 
 
 # ============================================================
-# UPLOAD BEREICH (IM CLEANEN MILCHGLAS-KARTEN-STIL)
+# UPLOAD BEREICH
 # ============================================================
 
 st.markdown("""

@@ -39,14 +39,16 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Exakt wie auf deinem Bild, sauberer Hintergrund)
+# DESIGN & CSS (Exakt wie auf dem Entwurfs-Foto: Blätter + Clean Look)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Exakter weicher Natur-Hintergrund wie auf dem Entwurf */
+    /* Weicher Blätter-Hintergrund exakt wie auf deinem Entwurf */
     .stApp {
-        background: linear-gradient(135deg, #f3faef 0%, #e7f3e2 100%);
+        background: 
+            linear-gradient(rgba(235, 243, 228, 0.86), rgba(225, 236, 216, 0.88)),
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1600&auto=format&fit=crop') center center / cover no-repeat fixed;
     }
 
     header[data-testid="stHeader"] {
@@ -54,41 +56,28 @@ st.markdown("""
     }
 
     .block-container {
-        max-width: 950px;
+        max-width: 920px;
         padding-top: 2.5rem;
         padding-bottom: 4rem;
     }
 
-    /* Top-Header mit Logo und Titel */
+    /* Top-Header mit Logo und Titel (clean ohne unnötige Icons) */
     .top-header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 4px;
-    }
-
-    .title-left {
         display: flex;
         align-items: center;
         gap: 16px;
+        margin-bottom: 4px;
     }
 
-    .logo-badge {
-        background: #287344;
+    .logo-svg {
         width: 54px;
         height: 54px;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
-        box-shadow: 0 6px 16px rgba(40,115,68,0.25);
+        flex-shrink: 0;
     }
 
     .main-title {
-        color: #174b2e;
-        font-size: 46px;
+        color: #163b22;
+        font-size: 48px;
         font-weight: 800;
         letter-spacing: -1.5px;
         margin: 0;
@@ -96,49 +85,52 @@ st.markdown("""
     }
 
     .subtitle {
-        color: #5c7960;
+        color: #3d5a42;
         font-size: 16px;
-        margin-bottom: 22px;
-        margin-top: 2px;
+        margin-bottom: 24px;
+        margin-top: 4px;
+        font-weight: 500;
     }
 
-    /* Hero Banner im exakten Entwurfs-Look[cite: 1, 2] */
+    /* Hero Banner mit Blättern & Wassertropfen rechts wie im Entwurf */
     .hero {
-        background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
-                    url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
+        background: 
+            linear-gradient(90deg, rgba(22, 62, 34, 0.96) 0%, rgba(26, 72, 40, 0.88) 48%, rgba(26, 72, 40, 0.25) 100%),
+            url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
         background-size: cover;
-        background-position: center;
-        padding: 36px 40px;
-        border-radius: 24px;
+        background-position: right center;
+        padding: 38px 42px;
+        border-radius: 22px;
         color: white;
-        margin: 10px 0 24px 0;
-        box-shadow: 0 10px 30px rgba(23,75,46,0.15);
+        margin: 10px 0 26px 0;
+        box-shadow: 0 12px 32px rgba(20, 55, 30, 0.16);
     }
 
     .hero h2 {
         color: white !important;
-        font-size: 26px;
+        font-size: 27px;
         margin-top: 0;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         font-weight: 700;
     }
 
     .hero p {
-        color: #e4f2e6;
+        color: #e6f2e8;
         font-size: 15px;
-        line-height: 1.5;
+        line-height: 1.55;
         margin: 0;
-        max-width: 680px;
+        max-width: 480px;
     }
 
-    /* Karten-Container im Bild-Stil[cite: 1, 2] */
+    /* Clean Milchglas-Karten wie auf dem Foto */
     .card-container {
-        background: #fbfdf9;
-        border: 1px solid #dcebd8;
-        border-radius: 24px;
+        background: rgba(250, 252, 247, 0.92);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 22px;
         padding: 28px 32px;
         margin-bottom: 24px;
-        box-shadow: 0 8px 24px rgba(30, 80, 40, 0.05);
+        box-shadow: 0 8px 28px rgba(25, 65, 35, 0.08);
     }
 
     .card-header {
@@ -149,25 +141,26 @@ st.markdown("""
     }
 
     .card-icon-box {
-        background: #e6f2e0;
+        background: #e4ede0;
         width: 44px;
         height: 44px;
-        border-radius: 14px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 20px;
+        color: #163b22;
     }
 
     .card-title {
-        color: #174b2e;
-        font-size: 22px;
+        color: #163b22;
+        font-size: 21px;
         font-weight: 700;
         margin: 0;
     }
 
     .card-desc {
-        color: #617566;
+        color: #4f6652;
         font-size: 15px;
         margin-bottom: 18px;
         margin-left: 58px;
@@ -179,16 +172,16 @@ st.markdown("""
         align-items: center;
         gap: 14px;
         margin: 12px 0;
-        color: #2c4c33;
+        color: #243f28;
         font-size: 15px;
         font-weight: 500;
     }
 
     .step-badge {
-        background-color: #287344;
+        background-color: #266b38;
         color: white;
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -198,63 +191,61 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader gestrichelte Box wie im Bild[cite: 1, 2] */
+    /* Streamlit File Uploader gestrichelte Box wie im Entwurf */
     div[data-testid="stFileUploader"] {
-        background: #f5f9f2;
-        border: 2px dashed #b8d4b0;
+        background: rgba(243, 247, 239, 0.8);
+        border: 1.5px dashed #9eb59a;
         border-radius: 16px;
-        padding: 10px;
-        margin-left: 58px;
-        width: calc(100% - 58px);
+        padding: 12px;
     }
     div[data-testid="stFileUploader"] section {
-        padding: 12px;
+        padding: 14px;
     }
 
     .section-heading {
-        color: #174b2e;
+        color: #163b22;
         font-size: 24px;
         font-weight: 800;
         margin: 25px 0 15px 0;
     }
 
     .result-name {
-        color: #174b2e;
+        color: #163b22;
         font-size: 26px;
         font-weight: 800;
     }
 
     .muted {
-        color: #718276;
+        color: #657a68;
         font-size: 13px;
     }
 
     div.stButton > button {
-        background: #287344;
+        background: #266b38;
         color: white;
         border: none;
         border-radius: 12px;
-        min-height: 45px;
+        min-height: 46px;
         font-weight: 700;
         transition: all 0.2s ease;
     }
 
     div.stButton > button:hover {
-        background: #174b2e;
+        background: #163b22;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(22,75,46,0.2);
+        box-shadow: 0 6px 15px rgba(22, 59, 34, 0.2);
     }
 
     div[data-testid="stMetric"] {
-        background: white;
+        background: rgba(250, 252, 247, 0.92);
         border: 1px solid #dcebd8;
         border-radius: 14px;
         padding: 14px;
     }
 
     hr {
-        border-color: #dcebd8;
+        border-color: #d2e0ce;
     }
 
     footer {
@@ -551,15 +542,19 @@ def classify_image(image, processor, model):
 
 
 # ============================================================
-# HEADER BEREICH (EXAKT WIE AUF DEM BILD, OHNE IRGENDWELCHE ICONS)
+# HEADER BEREICH (EXAKT WIE AUF DEM BILD, OHNE UNNÖTIGE ICONS)
 # ============================================================
 
 st.markdown("""
 <div class="top-header-row">
-    <div class="title-left">
-        <div class="logo-badge">🌿</div>
-        <h1 class="main-title">PlantScan</h1>
-    </div>
+    <svg class="logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 52C20 40 34 26 52 12" stroke="#2d7a36" stroke-width="4" stroke-linecap="round"/>
+        <path d="M28 36C18 34 10 24 12 12C24 10 34 18 36 28" fill="#469649"/>
+        <path d="M36 28C46 26 54 16 52 4C40 2 30 10 28 20" fill="#2d7a36"/>
+        <path d="M22 42C24 52 34 58 46 56C48 44 40 36 30 34" fill="#5aa856"/>
+        <path d="M38 26C48 28 56 38 54 50C42 52 32 44 30 34" fill="#35853d"/>
+    </svg>
+    <h1 class="main-title">PlantScan</h1>
 </div>
 <div class="subtitle">Dein intelligenter Begleiter für gesunde Pflanzen.</div>
 """, unsafe_allow_html=True)
@@ -573,11 +568,11 @@ st.markdown("""
 
 
 # ============================================================
-# UPLOAD BEREICH (IM EXAKT GLEICHEN DESIGN-KARTEN-STIL)
+# UPLOAD BEREICH (IM CLEANEN MILCHGLAS-KARTEN-STIL)
 # ============================================================
 
 st.markdown("""
-<div class="card-container" style="margin-bottom: 15px;">
+<div class="card-container" style="margin-bottom: 18px;">
     <div class="card-header">
         <div class="card-icon-box">📷</div>
         <h3 class="card-title">Deine Pflanze entdecken</h3>
@@ -596,14 +591,13 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 
 if uploaded_file is None:
-    # So funktioniert PlantScan Karte (wie im Bild)[cite: 1, 2]
     st.markdown("""
     <div class="card-container">
         <div class="card-header">
-            <div class="card-icon-box">🌱</div>
+            <div class="card-icon-box" style="background: transparent; font-size: 26px;">🌱</div>
             <h3 class="card-title">So funktioniert PlantScan</h3>
         </div>
-        <div style="margin-top: 15px; margin-left: 58px;">
+        <div style="margin-top: 12px; margin-left: 14px;">
             <div class="step-row">
                 <div class="step-badge">1</div>
                 <div>Lade ein Foto deiner Pflanze hoch.</div>
@@ -686,7 +680,7 @@ else:
                     <div class="result-name">{html.escape(plant["name"])}</div>
                     <p style="margin-top: 15px; line-height: 1.6;"><b>Ausführliche Beschreibung:</b><br>{html.escape(plant["description"])}</p>
                     <hr>
-                    <h3 style="color: #174b2e; margin-bottom: 8px;">💧 Detaillierte Pflegehinweise</h3>
+                    <h3 style="color: #163b22; margin-bottom: 8px;">💧 Detaillierte Pflegehinweise</h3>
                     <p style="line-height: 1.6; white-space: pre-line;">{html.escape(plant["care"])}</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -753,8 +747,8 @@ else:
 
 st.divider()
 st.markdown("""
-<div style="text-align:center; padding:20px; color:#55745d;">
-    <h3 style="color:#174b2e; margin-bottom:5px;">🌿 PlantScan</h3>
+<div style="text-align:center; padding:20px; color:#3d5a42;">
+    <h3 style="color:#163b22; margin-bottom:5px;">🌿 PlantScan</h3>
     Dein digitaler Pflanzenhelfer<br>
     <small>Ein KI-Schulprojekt</small>
 </div>

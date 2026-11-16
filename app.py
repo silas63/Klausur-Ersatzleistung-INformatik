@@ -39,17 +39,17 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Präzise 2 einzelne Blätter am Rand, butterweicher Übergang zur Mitte)
+# DESIGN & CSS (Perfekter weicher Übergang: Wenige klare Blätter am Rand, blasse saubere Mitte)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Exakter weicher Übergang: Nur zwei dezente Blätter an den Außenrändern, zur Mitte hin clean und blass */
+    /* Exakter Look wie auf dem Foto: Einzelne gut sichtbare Blätter am Rand, blasse cleane Mitte */
     .stApp {
         background: 
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=500&auto=format&fit=crop') left 35% / 18% auto no-repeat fixed,
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=500&auto=format&fit=crop') right 35% / 18% auto no-repeat fixed,
-            radial-gradient(circle at center, rgba(238, 247, 234, 0.98) 30%, rgba(210, 232, 205, 0.85) 75%, rgba(180, 215, 175, 0.6) 100%);
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=450&auto=format&fit=crop') left 15% / 20% auto no-repeat fixed,
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=450&auto=format&fit=crop') right 85% / 20% auto no-repeat fixed,
+            radial-gradient(circle at center, rgba(244, 249, 242, 0.98) 25%, rgba(220, 238, 215, 0.85) 65%, rgba(190, 220, 185, 0.5) 100%);
     }
 
     header[data-testid="stHeader"] {
@@ -125,7 +125,7 @@ st.markdown("""
 
     /* Clean Milchglas-Karten ohne harte Kanten */
     .card-container {
-        background: rgba(250, 252, 247, 0.94);
+        background: rgba(252, 254, 250, 0.95);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.9);
         border-radius: 22px;
@@ -194,7 +194,7 @@ st.markdown("""
 
     /* Streamlit File Uploader gestrichelte Box */
     div[data-testid="stFileUploader"] {
-        background: rgba(243, 247, 239, 0.8);
+        background: rgba(245, 248, 242, 0.8);
         border: 1.5px dashed #9eb59a;
         border-radius: 16px;
         padding: 12px;
@@ -239,7 +239,7 @@ st.markdown("""
     }
 
     div[data-testid="stMetric"] {
-        background: rgba(250, 252, 247, 0.94);
+        background: rgba(252, 254, 250, 0.95);
         border: 1px solid #dcebd8;
         border-radius: 14px;
         padding: 14px;

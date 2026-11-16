@@ -39,16 +39,14 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Perfekter weicher Übergang, dichter Dschungel, keine Kanten)
+# DESIGN & CSS (Clean & Perfekter weicher Natur-Look ohne Kanten)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Hintergrund mit perfektem, weichem Übergang von außen (dicht) nach innen (clean) */
+    /* Exakter, sauberer Natur-Hintergrund mit sanftem Farbverlauf */
     .stApp {
-        background: 
-            radial-gradient(circle at center, rgba(235, 245, 230, 0.95) 30%, rgba(200, 225, 195, 0.8) 70%, rgba(160, 200, 150, 0.6) 100%),
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1600&auto=format&fit=crop') center center / cover no-repeat fixed;
+        background: linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
     }
 
     header[data-testid="stHeader"] {
@@ -76,68 +74,64 @@ st.markdown("""
     }
 
     .main-title {
-        color: #163b22;
-        font-size: 48px;
+        color: #174b2e;
+        font-size: 44px;
         font-weight: 800;
         letter-spacing: -1.5px;
         margin: 0;
-        line-height: 1;
+        line-height: 1.1;
     }
 
     .subtitle {
-        color: #3d5a42;
-        font-size: 16px;
-        margin-bottom: 24px;
-        margin-top: 4px;
-        font-weight: 500;
+        color: #5c7960;
+        font-size: 17px;
+        margin-bottom: 25px;
     }
 
-    /* Hero Banner mit absolut dichtem Dschungel-Hintergrund */
+    /* Hero Banner im originalen Dschungel-Look */
     .hero {
-        background: 
-            linear-gradient(90deg, rgba(15, 48, 22, 0.95) 0%, rgba(20, 58, 28, 0.82) 55%, rgba(20, 58, 28, 0.3) 100%),
-            url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop');
+        background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
+                    URL('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
-        padding: 38px 42px;
-        border-radius: 22px;
+        padding: 36px 40px;
+        border-radius: 24px;
         color: white;
-        margin: 10px 0 26px 0;
-        box-shadow: 0 12px 32px rgba(20, 55, 30, 0.16);
+        margin: 15px 0 25px 0;
+        box-shadow: 0 10px 30px rgba(23,75,46,0.15);
     }
 
     .hero h2 {
         color: white !important;
-        font-size: 27px;
+        font-size: 28px;
         margin-top: 0;
         margin-bottom: 10px;
         font-weight: 700;
     }
 
     .hero p {
-        color: #e6f2e8;
+        color: #e4f2e6;
         font-size: 15px;
-        line-height: 1.55;
+        line-height: 1.6;
         margin: 0;
-        max-width: 480px;
+        max-width: 700px;
     }
 
-    /* Clean Milchglas-Karten ohne harte Kanten */
+    /* Clean Milchglas-Karten */
     .card-container {
-        background: rgba(250, 252, 247, 0.94);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        border-radius: 22px;
-        padding: 28px 32px;
-        margin-bottom: 24px;
-        box-shadow: 0 8px 28px rgba(25, 65, 35, 0.08);
+        background: #fbfdf9;
+        border: 1px solid #dcebd8;
+        border-radius: 24px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 24px rgba(30, 80, 40, 0.05);
     }
 
     .card-header {
         display: flex;
         align-items: center;
         gap: 14px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
     }
 
     .card-icon-box {
@@ -149,21 +143,20 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         font-size: 20px;
-        color: #163b22;
+        color: #174b2e;
     }
 
     .card-title {
-        color: #163b22;
-        font-size: 21px;
+        color: #174b2e;
+        font-size: 22px;
         font-weight: 700;
         margin: 0;
     }
 
     .card-desc {
-        color: #4f6652;
+        color: #617566;
         font-size: 15px;
-        margin-bottom: 18px;
-        margin-left: 58px;
+        margin-bottom: 20px;
     }
 
     /* Nummerierte Schritte */
@@ -172,16 +165,16 @@ st.markdown("""
         align-items: center;
         gap: 14px;
         margin: 12px 0;
-        color: #243f28;
+        color: #2c4c33;
         font-size: 15px;
         font-weight: 500;
     }
 
     .step-badge {
-        background-color: #266b38;
+        background-color: #287344;
         color: white;
-        width: 24px;
-        height: 24px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -191,61 +184,61 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader gestrichelte Box */
+    /* Streamlit File Uploader */
     div[data-testid="stFileUploader"] {
-        background: rgba(243, 247, 239, 0.8);
-        border: 1.5px dashed #9eb59a;
-        border-radius: 16px;
-        padding: 12px;
+        background: #f4f8f1;
+        border: 2px dashed #b8d4b0;
+        border-radius: 18px;
+        padding: 10px;
     }
     div[data-testid="stFileUploader"] section {
-        padding: 14px;
+        padding: 15px;
     }
 
     .section-heading {
-        color: #163b22;
+        color: #174b2e;
         font-size: 24px;
         font-weight: 800;
         margin: 25px 0 15px 0;
     }
 
     .result-name {
-        color: #163b22;
+        color: #174b2e;
         font-size: 26px;
         font-weight: 800;
     }
 
     .muted {
-        color: #657a68;
+        color: #718276;
         font-size: 13px;
     }
 
     div.stButton > button {
-        background: #266b38;
+        background: #287344;
         color: white;
         border: none;
         border-radius: 12px;
-        min-height: 46px;
+        min-height: 45px;
         font-weight: 700;
         transition: all 0.2s ease;
     }
 
     div.stButton > button:hover {
-        background: #163b22;
+        background: #174b2e;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(22, 59, 34, 0.2);
+        box-shadow: 0 6px 15px rgba(22,75,46,0.2);
     }
 
     div[data-testid="stMetric"] {
-        background: rgba(250, 252, 247, 0.94);
+        background: white;
         border: 1px solid #dcebd8;
         border-radius: 14px;
         padding: 14px;
     }
 
     hr {
-        border-color: #d2e0ce;
+        border-color: #dcebd8;
     }
 
     footer {
@@ -531,6 +524,7 @@ def classify_image(image, processor, model):
         raw_label = model.config.id2label[index.item()]
         
         db_entry = find_database_entry(raw_label, PLANT_INFO)
+        # Immer den sauberen deutschen Namen aus der Datenbank erzwingen falls vorhanden
         display_name = db_entry["name"] if db_entry else raw_label.replace("_", " ").capitalize()
         
         results.append({
@@ -547,13 +541,7 @@ def classify_image(image, processor, model):
 
 st.markdown("""
 <div class="top-header-row">
-    <svg class="logo-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 52C20 40 34 26 52 12" stroke="#2d7a36" stroke-width="4" stroke-linecap="round"/>
-        <path d="M28 36C18 34 10 24 12 12C24 10 34 18 36 28" fill="#469649"/>
-        <path d="M36 28C46 26 54 16 52 4C40 2 30 10 28 20" fill="#2d7a36"/>
-        <path d="M22 42C24 52 34 58 46 56C48 44 40 36 30 34" fill="#5aa856"/>
-        <path d="M38 26C48 28 56 38 54 50C42 52 32 44 30 34" fill="#35853d"/>
-    </svg>
+    <span style="font-size: 42px;">🌿</span>
     <h1 class="main-title">PlantScan</h1>
 </div>
 <div class="subtitle">Dein intelligenter Begleiter für gesunde Pflanzen.</div>
@@ -572,9 +560,9 @@ st.markdown("""
 # ============================================================
 
 st.markdown("""
-<div class="card-container" style="margin-bottom: 18px;">
+<div class="card-container">
     <div class="card-header">
-        <div class="card-icon-box">📷</div>
+        <span style="font-size: 26px;">📷</span>
         <h3 class="card-title">Deine Pflanze entdecken</h3>
     </div>
     <div class="card-desc">Lade ein Foto deiner Pflanze hoch.</div>
@@ -594,10 +582,10 @@ if uploaded_file is None:
     st.markdown("""
     <div class="card-container">
         <div class="card-header">
-            <div class="card-icon-box" style="background: transparent; font-size: 26px;">🌱</div>
+            <span style="font-size: 26px;">🌱</span>
             <h3 class="card-title">So funktioniert PlantScan</h3>
         </div>
-        <div style="margin-top: 12px; margin-left: 14px;">
+        <div style="margin-top: 15px;">
             <div class="step-row">
                 <div class="step-badge">1</div>
                 <div>Lade ein Foto deiner Pflanze hoch.</div>
@@ -657,7 +645,7 @@ else:
             st.divider()
 
             # ----------------------------------------
-            # AUSWAHL-BUTTONS
+            # AUSWAHL-BUTTONS (Zuerst muss ausgewählt werden)
             # ----------------------------------------
             col_b1, col_b2 = st.columns(2)
             with col_b1:
@@ -670,17 +658,17 @@ else:
             st.markdown("<br>", unsafe_allow_html=True)
 
             # ----------------------------------------
-            # ANSICHT: PFLEGE
+            # ANSICHT: PFLEGE (Nur wenn ausgewählt)
             # ----------------------------------------
             if st.session_state.view == "care":
                 st.markdown('<div class="section-heading">🌱 Pflanzenpflege & Informationen</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="card-container">
-                    <p class="muted">Erkannte Pflanzenart</p>
+                    <p class="muted">Erkannte Pflanzenart (Deutscher Name)</p>
                     <div class="result-name">{html.escape(plant["name"])}</div>
                     <p style="margin-top: 15px; line-height: 1.6;"><b>Ausführliche Beschreibung:</b><br>{html.escape(plant["description"])}</p>
                     <hr>
-                    <h3 style="color: #163b22; margin-bottom: 8px;">💧 Detaillierte Pflegehinweise</h3>
+                    <h3 style="color: #174b2e; margin-bottom: 8px;">💧 Detaillierte Pflegehinweise</h3>
                     <p style="line-height: 1.6; white-space: pre-line;">{html.escape(plant["care"])}</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -693,13 +681,13 @@ else:
                 st.caption("Betroffene Gruppe laut Datenbank: " + toxicity["audience"])
 
             # ----------------------------------------
-            # ANSICHT: ERKENNUNG & GIFTCHECK
+            # ANSICHT: ERKENNUNG & GIFTCHECK (Nur wenn ausgewählt)
             # ----------------------------------------
             elif st.session_state.view == "recognition":
                 st.markdown('<div class="section-heading">🔍 KI-Pflanzenerkennung & Giftigkeitscheck</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="card-container">
-                    <p class="muted">Wahrscheinlichste Pflanzenart</p>
+                    <p class="muted">Wahrscheinlichste Pflanzenart (Deutscher Name)</p>
                     <div class="result-name">{html.escape(plant["name"])}</div>
                     <p style="margin-top: 10px;"><b>Wissenschaftlicher Modell-Name:</b> {html.escape(label)}</p>
                     <p style="margin-top: 10px; line-height: 1.6;"><b>Über die Pflanze:</b><br>{html.escape(plant["description"])}</p>
@@ -747,8 +735,8 @@ else:
 
 st.divider()
 st.markdown("""
-<div style="text-align:center; padding:20px; color:#3d5a42;">
-    <h3 style="color:#163b22; margin-bottom:5px;">🌿 PlantScan</h3>
+<div style="text-align:center; padding:20px; color:#55745d;">
+    <h3 style="color:#174b2e; margin-bottom:5px;">🌿 PlantScan</h3>
     Dein digitaler Pflanzenhelfer<br>
     <small>Ein KI-Schulprojekt</small>
 </div>

@@ -39,16 +39,14 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Exakt wie auf deinem Design-Bild)
+# DESIGN & CSS (Exakt wie auf deinem Bild, sauberer Hintergrund)
 # ============================================================
 
 st.markdown("""
 <style>
+    /* Exakter weicher Natur-Hintergrund wie auf dem Entwurf */
     .stApp {
-        background: 
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') left center / 22% 100% no-repeat fixed,
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=400&auto=format&fit=crop') right center / 22% 100% no-repeat fixed,
-            linear-gradient(135deg, #f2f7ec 0%, #e1edd8 100%);
+        background: linear-gradient(135deg, #f3faef 0%, #e7f3e2 100%);
     }
 
     header[data-testid="stHeader"] {
@@ -57,11 +55,11 @@ st.markdown("""
 
     .block-container {
         max-width: 950px;
-        padding-top: 2rem;
+        padding-top: 2.5rem;
         padding-bottom: 4rem;
     }
 
-    /* Top-Bar mit Titel, Icons rechts und Untertitel */
+    /* Top-Header mit Logo und Titel */
     .top-header-row {
         display: flex;
         justify-content: space-between;
@@ -97,36 +95,6 @@ st.markdown("""
         line-height: 1;
     }
 
-    .top-right-icons {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .icon-pill {
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid #dcebd8;
-        padding: 8px 14px;
-        border-radius: 30px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(30,80,40,0.06);
-    }
-
-    .profile-circle {
-        background: rgba(255, 255, 255, 0.85);
-        border: 1px solid #dcebd8;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 4px 12px rgba(30,80,40,0.06);
-    }
-
     .subtitle {
         color: #5c7960;
         font-size: 16px;
@@ -134,7 +102,7 @@ st.markdown("""
         margin-top: 2px;
     }
 
-    /* Hero Banner im exakten Entwurfs-Look */
+    /* Hero Banner im exakten Entwurfs-Look[cite: 1, 2] */
     .hero {
         background: linear-gradient(rgba(23, 75, 46, 0.75), rgba(23, 75, 46, 0.75)), 
                     url('https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=1200&auto=format&fit=crop');
@@ -163,7 +131,7 @@ st.markdown("""
         max-width: 680px;
     }
 
-    /* Karten-Container im Bild-Stil */
+    /* Karten-Container im Bild-Stil[cite: 1, 2] */
     .card-container {
         background: #fbfdf9;
         border: 1px solid #dcebd8;
@@ -205,7 +173,7 @@ st.markdown("""
         margin-left: 58px;
     }
 
-    /* Nummerierte Schritte für "So funktioniert PlantScan" */
+    /* Nummerierte Schritte */
     .step-row {
         display: flex;
         align-items: center;
@@ -230,7 +198,7 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Streamlit File Uploader optisch anpassen (Gestrichelte Box wie im Bild) */
+    /* Streamlit File Uploader gestrichelte Box wie im Bild[cite: 1, 2] */
     div[data-testid="stFileUploader"] {
         background: #f5f9f2;
         border: 2px dashed #b8d4b0;
@@ -583,7 +551,7 @@ def classify_image(image, processor, model):
 
 
 # ============================================================
-# HEADER BEREICH (EXAKT WIE AUF DEM BILD)
+# HEADER BEREICH (EXAKT WIE AUF DEM BILD, OHNE IRGENDWELCHE ICONS)
 # ============================================================
 
 st.markdown("""
@@ -591,15 +559,6 @@ st.markdown("""
     <div class="title-left">
         <div class="logo-badge">🌿</div>
         <h1 class="main-title">PlantScan</h1>
-    </div>
-    <div class="top-right-icons">
-        <div class="icon-pill">
-            <span>☀️</span>
-            <div style="width: 24px; height: 12px; background: #c8dec4; border-radius: 10px; position: relative;">
-                <div style="width: 10px; height: 10px; background: white; border-radius: 50%; position: absolute; top: 1px; left: 1px;"></div>
-            </div>
-        </div>
-        <div class="profile-circle">👤</div>
     </div>
 </div>
 <div class="subtitle">Dein intelligenter Begleiter für gesunde Pflanzen.</div>
@@ -637,7 +596,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 
 if uploaded_file is None:
-    # So funktioniert PlantScan Karte (wie im Bild)
+    # So funktioniert PlantScan Karte (wie im Bild)[cite: 1, 2]
     st.markdown("""
     <div class="card-container">
         <div class="card-header">

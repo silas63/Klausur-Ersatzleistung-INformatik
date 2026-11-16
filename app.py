@@ -39,17 +39,16 @@ for key, value in DEFAULTS.items():
 
 
 # ============================================================
-# DESIGN & CSS (Mit echten Blättern an den Rändern & Dschungel-Banner)
+# DESIGN & CSS (Perfekter weicher Übergang, dichter Dschungel, keine Kanten)
 # ============================================================
 
 st.markdown("""
 <style>
-    /* Hintergrund mit sichtbaren Blättern an den Rändern wie auf dem Foto */
+    /* Hintergrund mit perfektem, weichem Übergang von außen (dicht) nach innen (clean) */
     .stApp {
         background: 
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop') left center / 22% 100% no-repeat fixed,
-            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=600&auto=format&fit=crop') right center / 22% 100% no-repeat fixed,
-            linear-gradient(135deg, #f0f7ec 0%, #dcecd5 100%);
+            radial-gradient(circle at center, rgba(235, 245, 230, 0.95) 30%, rgba(200, 225, 195, 0.8) 70%, rgba(160, 200, 150, 0.6) 100%),
+            url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1600&auto=format&fit=crop') center center / cover no-repeat fixed;
     }
 
     header[data-testid="stHeader"] {
@@ -93,11 +92,11 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* Hero Banner mit dichtem Dschungel-Hintergrund */
+    /* Hero Banner mit absolut dichtem Dschungel-Hintergrund */
     .hero {
         background: 
-            linear-gradient(90deg, rgba(22, 62, 34, 0.94) 0%, rgba(26, 72, 40, 0.85) 55%, rgba(26, 72, 40, 0.3) 100%),
-            url('https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop');
+            linear-gradient(90deg, rgba(15, 48, 22, 0.95) 0%, rgba(20, 58, 28, 0.82) 55%, rgba(20, 58, 28, 0.3) 100%),
+            url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         padding: 38px 42px;
@@ -123,11 +122,11 @@ st.markdown("""
         max-width: 480px;
     }
 
-    /* Clean Milchglas-Karten */
+    /* Clean Milchglas-Karten ohne harte Kanten */
     .card-container {
         background: rgba(250, 252, 247, 0.94);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.9);
         border-radius: 22px;
         padding: 28px 32px;
         margin-bottom: 24px;
